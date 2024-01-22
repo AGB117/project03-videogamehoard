@@ -1,0 +1,76 @@
+.status {
+  display: flex;
+  font-size: 2.2rem;
+  font-weight: 400;
+  align-items: center;
+}
+.status a {
+  flex: 1;
+  padding-left: 0.6rem;
+}
+
+.userCollection {
+  display: flex;
+}
+
+.userCollection a {
+  flex: 1;
+  padding-left: 0.6rem;
+}
+
+.buttons {
+  background-color: transparent;
+}
+
+.top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+
+.top button {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 1rem;
+  margin: 0rem;
+  background-color: transparent;
+  width: auto;
+  border-radius: 0rem;
+}
+
+.collections {
+  font-size: 3rem;
+}
+
+/* animation*/
+.modalDown {
+  animation: dropDown 0.3s forwards;
+}
+
+.modalUp {
+  animation: dropUp 0.5s ease forwards;
+}
+
+@keyframes dropDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dropUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}

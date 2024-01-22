@@ -1,0 +1,7 @@
+.searchContainer {
+  display: flex;
+}
+
+.searchBar {
+  margin: 2rem auto 4rem;
+}

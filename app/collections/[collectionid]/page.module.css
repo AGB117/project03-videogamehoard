@@ -1,0 +1,147 @@
+.container {
+  display: flex;
+}
+
+/*sidebar*/
+.sideBarContainer {
+  min-width: 30rem;
+  max-width: 30rem;
+  height: 90vh;
+  overflow-y: auto;
+  align-self: flex-start;
+  margin-top: 5rem;
+}
+
+.sideBarContainer label {
+  font-size: 2rem;
+}
+
+.sideBarContainer input {
+  margin-top: 1rem;
+  font-size: 1.8rem;
+  width: 22rem;
+  border: 0.1rem solid black;
+  border-radius: 50rem;
+  text-indent: 1.2rem;
+}
+
+.sideBarContainer ul {
+  font-size: 1.8rem;
+}
+.sideBarContainer li {
+  margin: 1rem 2rem;
+}
+
+.sideBarContainer li:nth-child(1) {
+  padding-bottom: 1rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid #69db7c;
+}
+.sideBarContainer li:nth-child(5) {
+  padding-bottom: 1rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid #69db7c;
+}
+
+.sideBarContainer a {
+  border-radius: 1rem;
+}
+
+.sideBarContainer a:hover {
+  background-color: #69db7c;
+}
+
+.sideBarContainer button {
+  margin: 1rem auto;
+  font-size: 2.2rem;
+  font-weight: 400;
+  padding: 0.2rem 0;
+  letter-spacing: 0.2rem;
+  border-radius: 5rem;
+  width: 10rem;
+  background-color: #69db7c;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sideBarContainer button:hover {
+  background-color: #37b24d;
+}
+
+.sideBarContainer button:disabled {
+  cursor: not-allowed;
+  background-color: grey;
+}
+
+/*collection container*/
+.collectionContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 0rem 2rem;
+  flex: 1;
+}
+
+.titles {
+  color: #212529;
+  margin: 0rem auto;
+}
+
+.titles h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.titles h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.gamesContainer {
+  margin-bottom: 4rem;
+}
+
+.games {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.deleteCollection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sideBarContainer {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0rem auto 0rem auto;
+    height: auto;
+  }
+
+  .collectionContainer {
+    border-top: 0.1rem solid #0077b6ff;
+    margin: 0;
+  }
+
+  .titles h1 {
+    font-size: 3rem;
+  }
+
+  .gamesContainer {
+    margin: 0rem 4rem 4rem 4rem;
+  }
+}
+
+@media (max-width: 699px) {
+  .games {
+    justify-content: center;
+  }
+}

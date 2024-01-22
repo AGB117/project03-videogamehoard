@@ -1,0 +1,307 @@
+.container {
+  display: flex;
+  padding-bottom: 4rem;
+  color: #212529;
+}
+
+.container p {
+  font-size: 1.8rem;
+  margin-bottom: 5rem;
+}
+.container h1 {
+  font-weight: 600;
+  font-size: 4rem;
+}
+.container h3 {
+  color: red;
+  font-weight: 600;
+  font-size: 3rem;
+}
+
+.container ul {
+  list-style: none;
+  display: flex;
+  justify-self: flex-start;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.container li:first-child {
+  font-weight: 600;
+}
+
+.container li {
+  margin-right: 0.8rem;
+}
+
+.container li:not(:last-child)::after {
+  content: ",";
+}
+
+.container li:nth-child(1)::after {
+  content: "";
+}
+
+.container li:last-child::after {
+  content: ".";
+}
+
+.added {
+  color: green;
+}
+
+/*left side */
+
+.leftSide {
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageContainer {
+  margin: 0 auto;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  justify-self: center;
+  justify-content: center;
+  justify-items: center;
+}
+
+.imageContainer img {
+  margin: 14rem auto 0 auto;
+  justify-self: center;
+  justify-content: center;
+  justify-items: center;
+  border-radius: 1rem;
+  width: 55rem;
+  height: auto;
+}
+
+.handlers {
+  margin: 4rem 0rem;
+}
+.handlers form {
+  display: grid;
+  justify-items: center;
+}
+
+.handlers label {
+  font-size: 2.4rem;
+}
+
+.handlers select {
+  border-right: 10px solid #69db7c;
+  font-size: 2rem;
+  background-color: #69db7c;
+  width: 30rem;
+  border-radius: 50rem;
+  overflow: visible;
+  padding: 0.4rem 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.handlers select option {
+  background-color: #fff;
+}
+
+/*right side*/
+
+.rightSide {
+  flex: 1;
+  margin-left: 5rem;
+  width: 50vw;
+  max-width: 70rem;
+  margin-top: 8rem;
+}
+
+/*Heading*/
+
+.heading {
+  display: flex;
+  max-width: 70rem;
+  margin-bottom: 1rem;
+  justify-content: space-between;
+}
+
+.collecitonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  gap: 10rem;
+}
+
+/* .collection {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+} */
+
+.collection span {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 1.6rem;
+  /* min-width: 15rem; */
+  padding: 0.1rem 0.8rem;
+  border-radius: 50rem;
+}
+
+.collection a {
+  font-size: 1.6rem;
+  background-color: #87ceebff;
+  border-radius: 50rem;
+  padding: 0.5rem 1.2rem;
+}
+.collection a:hover {
+  background-color: #00abe4ff;
+}
+/*Buttons*/
+/*add*/
+
+.buttons {
+  margin-bottom: 3rem;
+}
+.buttonAdd button {
+  background-color: #69db7c;
+
+  padding: 0.8rem;
+  border-radius: 50rem;
+  font-size: 1.8rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 3rem;
+}
+
+.buttonAdd select option {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  justify-items: center;
+  align-items: center;
+  justify-self: center;
+  justify-content: center;
+}
+
+.buttonAdd button:hover {
+  background-color: #37b24d;
+}
+
+.buttonAdd button:disabled {
+  cursor: not-allowed;
+  background-color: grey;
+}
+
+/*delete*/
+.buttonDelete button {
+  background-color: #ff5252ff;
+  padding: 1rem;
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-bottom: 3rem;
+}
+
+.buttonDelete button:hover {
+  background-color: #e03c3cff;
+}
+
+.buttonDelete button:disabled {
+  cursor: not-allowed;
+  background-color: grey;
+}
+
+.dateAdded {
+  margin-bottom: 2rem;
+}
+
+/*media handling*/
+
+@media (max-width: 1600px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .leftSide {
+    width: auto;
+    margin: 0rem 2rem;
+  }
+  .imageContainer {
+    margin: 2rem auto 0 auto;
+  }
+
+  .imageContainer img {
+    margin-top: 0rem;
+  }
+
+  .rightSide {
+    margin-top: 2rem;
+    margin: 0rem 2rem 2rem 2rem;
+  }
+
+  .rightSide p {
+    margin: 0rem;
+  }
+
+  .heading {
+    flex-direction: column;
+  }
+
+  .name {
+    display: flex;
+    justify-content: center;
+  }
+
+  .collection {
+    justify-content: center;
+
+    margin: 2rem 0rem;
+  }
+
+  .buttonDelete {
+    display: flex;
+    justify-content: center;
+  }
+
+  .container h1 {
+    font-weight: 600;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .rightSide p {
+    padding: 0.6rem;
+  }
+
+  .rightSide ul {
+    padding: 0.6rem;
+  }
+
+  .handlers {
+    margin: 1rem 0rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .container ul {
+    flex-wrap: wrap;
+  }
+
+  .heading {
+    max-width: none;
+    flex-direction: column;
+  }
+  .rightSide {
+    width: auto;
+    margin: 0rem 2rem 2rem 2rem;
+  }
+  .collecitonContainer {
+    margin-top: 2rem;
+    gap: 5rem;
+  }
+}

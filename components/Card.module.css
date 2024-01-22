@@ -1,0 +1,78 @@
+.card {
+  height: 35rem;
+  width: 32rem;
+  display: flex;
+  flex-direction: column;
+
+  /*box shadow*/
+  box-shadow: 0 1.2rem 1.2rem rgba(0, 0, 0, 0.2);
+  border-radius: 11px;
+  overflow: hidden;
+  transition: all 0.3s;
+  background-color: #fff;
+}
+
+/*Image*/
+.imageContainer {
+  justify-content: center;
+  align-items: center;
+  height: 20rem;
+}
+
+.imageContainer img {
+  
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.imgNotFound {
+  color: #ffff;
+  background-color: black;
+  justify-content: center;
+  align-items: center;
+  height: 20rem;
+
+  font-size: 2.4rem;
+  display: flex;
+  border-bottom: 0.1rem solid lightgrey;
+}
+
+/*Name*/
+.card h1 {
+  font-size: 2.2rem;
+  margin: 0.5rem 0.5rem 1rem 0.5rem;
+}
+
+/*Rating & Date*/
+.ratingDate {
+  display: flex;
+  font-size: 1.8rem;
+}
+
+.rating {
+  margin-left: 0.5rem;
+}
+
+.date {
+  margin: 0rem 0.5rem 0rem auto;
+}
+
+/*Genere*/
+.generes {
+  margin-top: auto;
+}
+
+.generes ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.generes li {
+  font-size: 1.6rem;
+  border: 0.1rem solid grey;
+  border-radius: 0.5rem;
+  padding: 0rem 0.5rem;
+  margin: 0.5rem;
+}

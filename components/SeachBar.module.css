@@ -1,0 +1,41 @@
+.searchContainer {
+  display: flex;
+}
+.searchBar {
+  margin: 2rem auto 4rem;
+}
+.searchBar input {
+  height: 4rem;
+  font-size: 2.2rem;
+  border-radius: 50rem;
+  padding: 0.5rem;
+  border: 0.1rem solid black;
+  text-indent: 1.8rem;
+}
+
+.searchBar button {
+  background-color: #69db7c;
+  border-radius: 50rem;
+  font-size: 2.2rem;
+  padding: 0.5rem 1.2rem;
+  margin-left: 3rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.searchBar button:hover {
+  background-color: #37b24d;
+}
+
+@media (max-width: 1100px) {
+  .searchBar {
+    justify-content: center;
+  }
+
+  .searchBar input {
+    font-size: 1.8rem;
+  }
+  .searchBar button {
+    font-size: 1.8rem;
+  }
+}

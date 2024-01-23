@@ -141,7 +141,7 @@ function CollectionBar({
 
                 {filteredArray.map((collections) => (
                   <li className={classes.userCollection} key={Math.random()}>
-                    {collectionid === classes.userCollection ? (
+                    {collectionid === encodeURIComponent(collections) ? (
                       <FolderIconOpen />
                     ) : (
                       <FolderIconClose />
@@ -220,7 +220,7 @@ function CollectionBar({
 
             {filteredArray.map((collections) => (
               <li className={classes.userCollection} key={Math.random()}>
-                {collectionid === classes.userCollection ? (
+                {collectionid === encodeURIComponent(collections) ? (
                   <FolderIconOpen />
                 ) : (
                   <FolderIconClose />

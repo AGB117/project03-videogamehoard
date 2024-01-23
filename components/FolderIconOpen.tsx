@@ -1,6 +1,6 @@
 import { FolderOpen } from "@phosphor-icons/react/dist/ssr";
 
-function FolderIcon() {
+function FolderIconOpen() {
   return (
     <div>
       <FolderOpen size={26} weight="duotone" color="#2b8a3e" />
@@ -8,4 +8,4 @@ function FolderIcon() {
   );
 }
 
-export default FolderIcon;
+export default FolderIconOpen;

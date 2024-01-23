@@ -50,9 +50,6 @@ async function Card({ gameId, gameName, gameImg, gameRating }: Card) {
     userData.released.replace(/-/g, "/")
   );
 
-  function imageLoad() {
-    console.log("hello this imageload works");
-  }
   ///////
   return (
     <div className={classes.card}>

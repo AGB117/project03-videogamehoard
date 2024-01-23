@@ -210,6 +210,7 @@ async function SingleCollection({
       <div className={classes.container}>
         <div className={classes.sideBarContainer}>
           <CollectionBar
+            collectionid={collectionid}
             filteredArray={filteredArray}
             createCollectionHandler={createCollectionHandler}
           />

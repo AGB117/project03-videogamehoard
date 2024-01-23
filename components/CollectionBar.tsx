@@ -2,10 +2,13 @@
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import CollectionForm from "./CollectionForm";
-import FolderIcon from "./FolderIcon";
+import FolderIconOpen from "./FolderIconOpen";
+import FolderIconClose from "./FolderIconClose";
 import classes from "./CollectionBar.module.css";
 import { CaretDown, CaretUp } from "@phosphor-icons/react";
+
 type FilteredArray = {
+  collectionid: string;
   filteredArray: string[];
   createCollectionHandler: (formData: FormData) => void;
 };
@@ -15,6 +18,7 @@ type WidthObject = {
 };
 
 function CollectionBar({
+  collectionid,
   filteredArray,
   createCollectionHandler,
 }: FilteredArray) {
@@ -43,6 +47,7 @@ function CollectionBar({
     windowWidth.width <= 1100 ? setMobileNav(true) : setMobileNav(false);
   }, [windowWidth.width]);
 
+  console.log("the current collection is ", collectionid);
   return (
     <Fragment>
       <div className={classes.collectionBar}>
@@ -78,7 +83,11 @@ function CollectionBar({
                   />
                 </li>
                 <li className={classes.status}>
-                  <FolderIcon />
+                  {collectionid === "all" ? (
+                    <FolderIconOpen />
+                  ) : (
+                    <FolderIconClose />
+                  )}
                   <Link
                     href="/collections/[collectionid]"
                     as={`/collections/all`}
@@ -88,7 +97,11 @@ function CollectionBar({
                   </Link>
                 </li>
                 <li className={classes.status}>
-                  <FolderIcon />
+                  {collectionid === "want%20to%20play" ? (
+                    <FolderIconOpen />
+                  ) : (
+                    <FolderIconClose />
+                  )}
                   <Link
                     href="/collections/[collectionid]"
                     as={`/collections/want%20to%20play`}
@@ -98,7 +111,11 @@ function CollectionBar({
                   </Link>
                 </li>
                 <li className={classes.status}>
-                  <FolderIcon />
+                  {collectionid === "currently%20playing" ? (
+                    <FolderIconOpen />
+                  ) : (
+                    <FolderIconClose />
+                  )}
                   <Link
                     href="/collections/[collectionid]"
                     as={`/collections/currently%20playing`}
@@ -108,7 +125,11 @@ function CollectionBar({
                   </Link>
                 </li>
                 <li className={classes.status}>
-                  <FolderIcon />
+                  {collectionid === "completed" ? (
+                    <FolderIconOpen />
+                  ) : (
+                    <FolderIconClose />
+                  )}
                   <Link
                     href="/collections/[collectionid]"
                     as={`/collections/completed`}
@@ -120,7 +141,11 @@ function CollectionBar({
 
                 {filteredArray.map((collections) => (
                   <li className={classes.userCollection} key={Math.random()}>
-                    <FolderIcon />
+                    {collectionid === classes.userCollection ? (
+                      <FolderIconOpen />
+                    ) : (
+                      <FolderIconClose />
+                    )}
                     <Link
                       href="/collections/[collectionid]"
                       as={`/collections/${encodeURIComponent(collections)}`}
@@ -143,13 +168,21 @@ function CollectionBar({
               />
             </li>
             <li className={classes.status}>
-              <FolderIcon />
+              {collectionid === "all" ? (
+                <FolderIconOpen />
+              ) : (
+                <FolderIconClose />
+              )}
               <Link href="/collections/[collectionid]" as={`/collections/all`}>
                 All games
               </Link>
             </li>
             <li className={classes.status}>
-              <FolderIcon />
+              {collectionid === "want%20to%20play" ? (
+                <FolderIconOpen />
+              ) : (
+                <FolderIconClose />
+              )}
               <Link
                 href="/collections/[collectionid]"
                 as={`/collections/want%20to%20play`}
@@ -159,7 +192,11 @@ function CollectionBar({
               </Link>
             </li>
             <li className={classes.status}>
-              <FolderIcon />
+              {collectionid === "currently%20playing" ? (
+                <FolderIconOpen />
+              ) : (
+                <FolderIconClose />
+              )}
               <Link
                 href="/collections/[collectionid]"
                 as={`/collections/currently%20playing`}
@@ -168,7 +205,11 @@ function CollectionBar({
               </Link>
             </li>
             <li className={classes.status}>
-              <FolderIcon />
+              {collectionid === "completed" ? (
+                <FolderIconOpen />
+              ) : (
+                <FolderIconClose />
+              )}
               <Link
                 href="/collections/[collectionid]"
                 as={`/collections/completed`}
@@ -179,7 +220,11 @@ function CollectionBar({
 
             {filteredArray.map((collections) => (
               <li className={classes.userCollection} key={Math.random()}>
-                <FolderIcon />
+                {collectionid === classes.userCollection ? (
+                  <FolderIconOpen />
+                ) : (
+                  <FolderIconClose />
+                )}
                 <Link
                   href="/collections/[collectionid]"
                   as={`/collections/${encodeURIComponent(collections)}`}

@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import SearchBar from "@/components/SearchBar";
 import Card from "@/components/Card";
 
-type GameList = {
+export type GameList = {
   name: string;
   id: number;
   background_image: string;
@@ -11,9 +11,15 @@ type GameList = {
   released: string;
   slug: string;
   rating: number;
+  genres: [
+    {
+      id: string;
+      name: string;
+    }
+  ];
 };
 
-type platform = { platform: { id: number; slug: string; name: string } };
+// type platform = { platform: { id: number; slug: string; name: string } };
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -39,6 +45,7 @@ async function SearchResults({
   const userData = await response.json();
 
   const gameResults = userData.results;
+  console.log("search results", gameResults);
 
   return (
     <Fragment>
@@ -54,6 +61,8 @@ async function SearchResults({
                 gameName={game.name}
                 gameImg={game.background_image}
                 gameRating={game.rating}
+                gameDate={game.released}
+                gameGenere={game.genres}
               />
             </div>
           ))}

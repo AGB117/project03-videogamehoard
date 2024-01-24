@@ -47,7 +47,7 @@ function CollectionBar({
     windowWidth.width <= 1100 ? setMobileNav(true) : setMobileNav(false);
   }, [windowWidth.width]);
 
-  console.log("the current collection is ", collectionid);
+  // console.log("the current collection is ", collectionid);
   return (
     <Fragment>
       <div className={classes.collectionBar}>

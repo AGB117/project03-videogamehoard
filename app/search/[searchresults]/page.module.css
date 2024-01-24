@@ -6,22 +6,28 @@
   margin: 2rem auto 4rem;
 }
 
-.results {
-  display: grid;
+/* .results {
+  display: flex;
   margin-left: 4rem;
   padding-bottom: 4rem;
-}
+} */
 
 .games {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: center;
+  justify-content: flex-start;
+  margin: 0rem 3rem;
+  padding-bottom: 4rem;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 719px) {
   .results {
     margin-left: 0;
     padding-bottom: 0;
+  }
+
+  .games {
+    justify-content: center;
   }
 }

@@ -16,7 +16,7 @@ function DeleteCollection({ deleteCollectionHandler, collectionid }: Delete) {
   }
 
   function answeredYesHandler() {
-    deleteCollectionHandler(collectionid.replace(/%20/g, " "));
+    deleteCollectionHandler(decodeURIComponent(collectionid));
   }
 
   return (

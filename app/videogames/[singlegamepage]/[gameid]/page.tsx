@@ -190,9 +190,9 @@ async function SinglePageInfo({
   ];
 
   //delete this later
-  const arrayStatus: string[] = games.map((games) => games.status);
+  // const arrayStatus: string[] = games.map((games) => games.status);
 
-  const filteredArrayStatus: string[] = [...new Set(arrayStatus)];
+  // const filteredArrayStatus: string[] = [...new Set(arrayStatus)];
 
   async function changeCollectionHandler(collectionChange: string) {
     "use server";
@@ -326,7 +326,7 @@ async function SinglePageInfo({
                   </div>
                 )}
 
-                {gameInCollection && (
+                {gameInCollection ? (
                   <div className={classes.collection}>
                     <Link
                       href="/collections/[collectionid]"
@@ -334,6 +334,10 @@ async function SinglePageInfo({
                         gameCollectionName
                       )}`}
                     >{`${gameCollection}`}</Link>
+                  </div>
+                ) : (
+                  <div className={classes.collection}>
+                    <span>No collection</span>
                   </div>
                 )}
               </div>

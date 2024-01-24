@@ -4,9 +4,11 @@ import { redirect } from "next/navigation";
 import classes from "./page.module.css";
 import { Fragment } from "react";
 import { revalidatePath } from "next/cache";
-import Card from "@/components/Card";
+// import Card from "@/components/Card";
 import CollectionBar from "@/components/CollectionBar";
 import DeleteCollection from "@/components/DeleteCollection";
+// import { type GameList } from "@/app/search/[searchresults]/page";
+import CardCollections from "@/components/CardCollections";
 
 export type GameObject = {
   gameId: number;
@@ -51,7 +53,7 @@ async function SingleCollection({
     .from("games")
     .select()
     .eq("user_id", user.id)
-    .eq("collection", decodeURIComponent(collectionid));
+    .eq("collection", collectionid.replace(/%20/g, " "));
 
   //collecitons by status
   const { data: gamesByStatus } = await supabase
@@ -78,7 +80,7 @@ async function SingleCollection({
 
   const hardCodedCollection = collectionid === "all" ? "games" : "";
 
-  //game bys user created collection FILTER EMPTY OBJ
+  //game by user created collection FILTER EMPTY OBJ
   const gamesInCollection = games.map((games) => games.game_info);
 
   const filteredObject = gamesInCollection.filter((obj) =>
@@ -91,6 +93,11 @@ async function SingleCollection({
   const filteredAllGamesClean = allGamesCollection.filter((obj) =>
     Object.values(obj).some((value) => value !== "" && value !== null)
   );
+
+  // console.log(
+  //   "id array of filetered",
+  //   filteredAllGamesClean.map((game) => game.gameId)
+  // );
 
   //set new array to remove duplicates
   const filteredAllGames: GameObject = [...new Set(filteredAllGamesClean)];
@@ -187,7 +194,7 @@ async function SingleCollection({
         .from("games")
         .update({ collection: "" })
         .eq("user_id", user?.id)
-        .eq("collection", collectionid)
+        .eq("collection", decodeURIComponent(collectionid))
         .select();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -205,6 +212,7 @@ async function SingleCollection({
     redirect("/collections/all");
   }
 
+  // console.log(decodeURIComponent(collectionid));
   return (
     <Fragment>
       <div className={classes.container}>
@@ -262,24 +270,14 @@ async function SingleCollection({
             <div className={classes.games}>
               {filteredObject.map((games) => (
                 <div key={games.gameId}>
-                  <Card
-                    gameId={games.gameId}
-                    gameName={games.gameName}
-                    gameImg={games.gameImg}
-                    gameRating={games.rating}
-                  />
+                  <CardCollections gameId={games.gameId} />
                 </div>
               ))}
 
               {collectionid === "all"
                 ? filteredAllGames.map((games) => (
                     <div key={games.gameId}>
-                      <Card
-                        gameId={games.gameId}
-                        gameName={games.gameName}
-                        gameImg={games.gameImg}
-                        gameRating={games.rating}
-                      />
+                      <CardCollections gameId={games.gameId} />
                     </div>
                   ))
                 : ""}
@@ -289,12 +287,7 @@ async function SingleCollection({
               collectionid === "currently%20playing"
                 ? filteredStatusGames.map((games) => (
                     <div key={games.gameId}>
-                      <Card
-                        gameId={games.gameId}
-                        gameName={games.gameName}
-                        gameImg={games.gameImg}
-                        gameRating={games.rating}
-                      />
+                      <CardCollections gameId={games.gameId} />
                     </div>
                   ))
                 : ""}

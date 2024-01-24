@@ -1,15 +1,9 @@
-"use client";
 import classes from "./Card.module.css";
 import Link from "next/link";
 import ImageLoader from "./ImageLoader";
 
 type Card = {
   gameId: number;
-  gameName: string;
-  gameImg: string;
-  gameRating: number;
-  gameDate: string;
-  gameGenere: Genere[];
 };
 
 type Genere = {
@@ -17,14 +11,12 @@ type Genere = {
   name: string;
 };
 
-function Card({
-  gameId,
-  gameName,
-  gameImg,
-  gameRating,
-  gameDate,
-  gameGenere,
-}: Card) {
+async function CardCollections({ gameId }: Card) {
+  const response = await fetch(
+    `https://api.rawg.io/api/games/${gameId}?key=${process.env.RAWG_API_KEY}`
+  );
+  const rawgData = await response.json();
+
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
@@ -47,37 +39,38 @@ function Card({
     return formattedDate;
   }
 
-  if (!gameDate) {
+  if (!rawgData.released) {
     return;
   }
 
-  const formattedDate: string = formatDate(gameDate.replace(/-/g, "/"));
+  const formattedDate: string = formatDate(
+    rawgData.released.replace(/-/g, "/")
+  );
 
-  ///////
   return (
     <div className={classes.card}>
       <Link
         href="/videogames/[singlegamepage]/[gameid]"
-        as={`/videogames/${gameName}/${gameId}`}
+        as={`/videogames/${rawgData.name}/${rawgData.id}`}
       >
-        {gameImg ? (
+        {rawgData.background_image ? (
           <div className={classes.imageContainer}>
-            <ImageLoader image={gameImg} />
+            <ImageLoader image={rawgData.background_image} />
           </div>
         ) : (
           <div className={classes.imgNotFound}>Image not Found!</div>
         )}
       </Link>
-      <h1>{gameName}</h1>
+      <h1>{rawgData.name}</h1>
 
       <div className={classes.ratingDate}>
-        <div className={classes.rating}>Rating: {gameRating}/5</div>
+        <div className={classes.rating}>Rating: {rawgData.rating}/5</div>
 
         <div className={classes.date}>{formattedDate}</div>
       </div>
       <div className={classes.generes}>
         <ul>
-          {gameGenere.map((genere: Genere) => (
+          {rawgData.genres.map((genere: Genere) => (
             <li key={genere.id}>{genere.name}</li>
           ))}
         </ul>
@@ -86,4 +79,4 @@ function Card({
   );
 }
 
-export default Card;
+export default CardCollections;

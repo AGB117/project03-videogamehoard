@@ -42,7 +42,7 @@ export default async function Index() {
               <img alt="website features" src="/home2.webp" />
             </div>
           </div>
-          <p>Save games to your custom collections and track your progress</p>
+          <p>Save games to your custom collections and track your progress.</p>
         </div>
         <div className={classes.logInContainer}>
           <div className={classes.logIn}>

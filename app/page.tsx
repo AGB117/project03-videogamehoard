@@ -1,7 +1,7 @@
 import AuthButton from "@/components/AuthButton";
 import SupabaseLogo from "@/components/SupabaseLogo";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+// import { createClient } from "@/utils/supabase/server";
+// import { cookies } from "next/headers";
 import classes from "./page.module.css";
 import { Fragment } from "react";
 
@@ -16,27 +16,42 @@ export const metadata = {
 };
 
 export default async function Index() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  // const cookieStore = cookies();
+  // const supabase = createClient(cookieStore);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
 
-  const { data: games, error } = await supabase.from("games").select();
+  // const { data: games, error } = await supabase.from("games").select();
 
-  console.log(user);
-
-  // const noGames = games?.length ? true : false;
+  // console.log(user);
 
   return (
     <Fragment>
       <div className={classes.imageContainer}></div>
-      <div className={classes.logInContainer}>
-        <p>Powered by</p>
-        <SupabaseLogo />
-        <div className={classes.logInButton}>
-          <AuthButton />
+      <div className={classes.homeContainer}>
+        <div className={classes.features}>
+          <p>Search over 350,000 games.</p>
+
+          <div className={classes.featuresImgContainer}>
+            <div className={classes.home1}>
+              <img alt="website features" src="/home1.webp" />
+            </div>
+            <div className={classes.home2}>
+              <img alt="website features" src="/home2.webp" />
+            </div>
+          </div>
+          <p>Save games to your custom collections and track your progress</p>
+        </div>
+        <div className={classes.logInContainer}>
+          <div className={classes.logIn}>
+            <p>Powered by</p>
+            <SupabaseLogo />
+            <div className={classes.logInButton}>
+              <AuthButton />
+            </div>
+          </div>
         </div>
       </div>
     </Fragment>

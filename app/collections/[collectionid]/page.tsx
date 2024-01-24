@@ -53,7 +53,7 @@ async function SingleCollection({
     .from("games")
     .select()
     .eq("user_id", user.id)
-    .eq("collection", decodeURIComponent(collectionid));
+    .eq("collection", collectionid.replace(/%20/g, " "));
 
   //collecitons by status
   const { data: gamesByStatus } = await supabase
@@ -194,7 +194,7 @@ async function SingleCollection({
         .from("games")
         .update({ collection: "" })
         .eq("user_id", user?.id)
-        .eq("collection", collectionid)
+        .eq("collection", decodeURIComponent(collectionid))
         .select();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -212,6 +212,7 @@ async function SingleCollection({
     redirect("/collections/all");
   }
 
+  // console.log(decodeURIComponent(collectionid));
   return (
     <Fragment>
       <div className={classes.container}>

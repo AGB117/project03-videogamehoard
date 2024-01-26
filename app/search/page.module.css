@@ -1,5 +1,6 @@
 .searchContainer {
   display: flex;
+  height: 90vh;
 }
 
 .searchBar {

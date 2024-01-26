@@ -10,7 +10,6 @@ import { Fragment } from "react";
 import AddGameForm from "@/components/AddGameForm";
 import Link from "next/link";
 import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
-import { type PostgrestError } from "@supabase/supabase-js";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

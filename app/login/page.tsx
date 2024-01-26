@@ -67,44 +67,46 @@ export default function Login({
     <Fragment>
       <div className={classes.imageContainer}></div>
       <div className={classes.logInContainer}>
-        <form
-          className={`${"animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"} `}
-          action={signIn}
-        >
-          <label className="text-md" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="rounded-md px-4 py-2 bg-inherit border border-black mb-6"
-            name="email"
-            placeholder="you@example.com"
-            required
-          />
-          <label className="text-md" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="rounded-md px-4 py-2 bg-inherit border border-black mb-6"
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            required
-          />
-          <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
-            Sign In
-          </button>
-          <button
-            formAction={signUp}
-            className="border bg-slate-300 border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+        <div className={classes.formContainer}>
+          <form
+            className={`${"animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"} `}
+            action={signIn}
           >
-            Sign Up
-          </button>
-          {searchParams?.message && (
-            <p className="mt-4 p-4 text-center bg-foreground/10 rounded-md text-slate-800">
-              {searchParams.message}
-            </p>
-          )}
-        </form>
+            <label className="text-md" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="rounded-md px-4 py-2 bg-inherit border border-black mb-6"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+            <label className="text-md" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="rounded-md px-4 py-2 bg-inherit border border-black mb-6"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              required
+            />
+            <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
+              Sign In
+            </button>
+            <button
+              formAction={signUp}
+              className="border bg-slate-300 border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+            >
+              Sign Up
+            </button>
+            {searchParams?.message && (
+              <p className="mt-4 p-4 text-center bg-foreground/10 rounded-md text-slate-800">
+                {searchParams.message}
+              </p>
+            )}
+          </form>
+        </div>
       </div>
     </Fragment>
   );

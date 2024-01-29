@@ -86,7 +86,39 @@ async function SinglePageInfo({
         collection: collection,
       },
     ]);
+    /////////////////////////////////////////////////////////////
+    if (status === "completed") {
+      const nowDate = new Date();
+      const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+        nowDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
 
+      const { data, error } = await supabase
+        .from("games")
+        .update({ finishedplaying: nowDateFormatted })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    }
+
+    if (status === "currently playing") {
+      const nowDate = new Date();
+      const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+        nowDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+      console.log("nowDateFormatted", nowDateFormatted);
+
+      const { data, error } = await supabase
+        .from("games")
+        .update({ startedplaying: nowDateFormatted })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+
+      console.log("game if for complete is working", status);
+    }
+    /////////////////////////////////////////////////////////////
     revalidatePath(`/videogames/[singlegamepage]/${gameid}`, "page");
   }
 
@@ -188,11 +220,6 @@ async function SinglePageInfo({
     ),
   ];
 
-  //delete this later
-  // const arrayStatus: string[] = games.map((games) => games.status);
-
-  // const filteredArrayStatus: string[] = [...new Set(arrayStatus)];
-
   async function changeCollectionHandler(collectionChange: string) {
     "use server";
     try {
@@ -244,6 +271,46 @@ async function SinglePageInfo({
         .eq("game_info ->> gameName", userData.name)
         .select();
 
+      /////////////////////////////////////////////////////////////////
+      /////////////////////////mark//////////////////
+
+      //i have a column in supabase called startedplaying and a column called finished playing
+      //when that status changes to currently playing print a date on started playing column and read it for the singlegamepage
+      //if the game is moved to finishedplaying print a date to that column and display it on the singlemgame page
+      //later add a way to edit those dates
+      //////
+      // console.log("status changed to ", statusChange);
+      if (statusChange === "completed") {
+        const nowDate = new Date();
+        const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+          nowDate.getMonth() + 1
+        ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+        const { data, error } = await supabase
+          .from("games")
+          .update({ finishedplaying: nowDateFormatted })
+          .eq("user_id", user?.id)
+          .eq("game_info ->> gameName", userData.name)
+          .select();
+      }
+
+      if (statusChange === "currently playing") {
+        const nowDate = new Date();
+        const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+          nowDate.getMonth() + 1
+        ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+        console.log("nowDateFormatted", nowDateFormatted);
+
+        const { data, error } = await supabase
+          .from("games")
+          .update({ startedplaying: nowDateFormatted })
+          .eq("user_id", user?.id)
+          .eq("game_info ->> gameName", userData.name)
+          .select();
+
+        console.log("game if for complete is working", statusChange);
+      }
       revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -278,7 +345,7 @@ async function SinglePageInfo({
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
-      .split("/")
+      .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
 
@@ -297,15 +364,36 @@ async function SinglePageInfo({
     return formattedDate;
   }
 
-  const formattedDate: string = formatDate(
-    userData.released.replace(/-/g, "/")
-  );
+  const formattedDateReleased: string = formatDate(userData.released);
 
   const dateAdded = gameObject.map((game) => game.dateadded);
-  const dateAddedExists = dateAdded.length !== 0 ? true : false;
+  const dateStartedPlaying = gameObject.map((game) => game.startedplaying);
+  const dateFinishedPlaying = gameObject.map((game) => game.finishedplaying);
 
-  const formattedDateAdded: string = formatDate(
-    dateAdded.toString().replace(/-/g, "/")
+  const dateAddedExists = dateAdded.length !== 0 ? true : false;
+  const dateStartedPlayingExists =
+    dateStartedPlaying.length !== 0 && dateStartedPlaying[0] !== null
+      ? true
+      : false;
+  const dateFinishedPlayingExists =
+    dateFinishedPlaying.length !== 0 && dateFinishedPlaying[0] !== null
+      ? true
+      : false;
+
+  ///////
+  console.log(
+    "valid of invalid date finished",
+    dateFinishedPlaying,
+    dateFinishedPlaying.length,
+    dateFinishedPlayingExists
+  );
+  /////
+  const formattedDateAdded: string = formatDate(dateAdded.toString());
+  const formattedStartedPlaying: string = formatDate(
+    dateStartedPlaying.toString()
+  );
+  const formattedFinishedPlaying: string = formatDate(
+    dateFinishedPlaying.toString()
   );
 
   return (
@@ -400,7 +488,7 @@ async function SinglePageInfo({
               </div>
 
               <p>{userData.description_raw}</p>
-              <p>Released on {formattedDate}</p>
+              <p>Released on {formattedDateReleased}</p>
 
               <ul>
                 <li>Platforms:</li>
@@ -417,6 +505,20 @@ async function SinglePageInfo({
               {dateAddedExists && (
                 <div className={classes.dateAdded}>
                   <p>Added to library on {formattedDateAdded}</p>
+                </div>
+              )}
+
+              {<p>My activity</p>}
+              <p>Started playing on</p>
+              {dateStartedPlayingExists && (
+                <div className={classes.dateAdded}>
+                  {formattedStartedPlaying}
+                </div>
+              )}
+              <p>Finished playing on</p>
+              {dateFinishedPlayingExists && (
+                <div className={classes.dateAdded}>
+                  {formattedFinishedPlaying}
                 </div>
               )}
 

@@ -28,7 +28,7 @@ function Card({
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
-      .split("/")
+      .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
 
@@ -51,7 +51,7 @@ function Card({
     return;
   }
 
-  const formattedDate: string = formatDate(gameDate.replace(/-/g, "/"));
+  const formattedDate: string = formatDate(gameDate);
 
   ///////
   return (

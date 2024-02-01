@@ -8,10 +8,13 @@
   font-size: 1.8rem;
   margin-bottom: 5rem;
 }
+
 .container h1 {
   font-weight: 600;
   font-size: 4rem;
+  margin-top: 5rem;
 }
+
 .container h3 {
   color: red;
   font-weight: 600;
@@ -21,26 +24,22 @@
 .container ul {
   list-style: none;
   display: flex;
-  justify-self: flex-start;
-  margin-bottom: 2rem;
   font-size: 1.8rem;
-}
-
-.container li:first-child {
-  font-weight: 600;
+  flex-wrap: wrap;
+  margin-right: 5rem;
 }
 
 .container li {
-  margin-right: 0.8rem;
+  display: block;
 }
 
 .container li:not(:last-child)::after {
-  content: ",";
+  content: ",\00a0";
 }
 
-.container li:nth-child(1)::after {
+/* .container li:nth-child(0)::after {
   content: "";
-}
+} */
 
 .container li:last-child::after {
   content: ".";
@@ -62,7 +61,7 @@
   margin: 0 auto;
   object-fit: cover;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   justify-self: center;
   justify-content: center;
   justify-items: center;
@@ -133,21 +132,17 @@
   gap: 10rem;
 }
 
-/* .collection {
+.addedContainer {
   display: flex;
-  align-items: flex-end;
-  margin-bottom: 2rem;
-} */
+  justify-content: center;
+  margin-top: 3rem;
+}
 
 .collection span {
   display: flex;
-  flex-shrink: 0;
   justify-content: center;
-  font-weight: 400;
-  font-size: 1.6rem;
-  /* min-width: 15rem; */
-  padding: 0.1rem 0.8rem;
-  border-radius: 50rem;
+  font-weight: 600;
+  font-size: 1.8rem;
 }
 
 .collection a {
@@ -204,6 +199,7 @@
   transition: all 0.3s ease;
   cursor: pointer;
   margin-bottom: 3rem;
+  flex: 1;
 }
 
 .buttonDelete button:hover {
@@ -217,6 +213,30 @@
 
 .dateAdded {
   margin-bottom: 2rem;
+}
+
+.deleteBtnContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5rem;
+}
+
+.infoGrid {
+  display: grid;
+  font-size: 2rem;
+  grid-template-columns: repeat(2, 2fr);
+  /* width: 100%; */
+}
+
+.infoGrid h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 3rem;
+}
+
+.infoGrid {
+  font-size: 2rem;
+  padding: 0;
 }
 
 /*media handling*/
@@ -259,7 +279,6 @@
 
   .collection {
     justify-content: center;
-
     margin: 2rem 0rem;
   }
 
@@ -268,17 +287,7 @@
     justify-content: center;
   }
 
-  .container h1 {
-    font-weight: 600;
-    font-size: 3rem;
-    margin-bottom: 2rem;
-  }
-
   .rightSide p {
-    padding: 0.6rem;
-  }
-
-  .rightSide ul {
     padding: 0.6rem;
   }
 

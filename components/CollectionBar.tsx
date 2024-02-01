@@ -225,6 +225,7 @@ function CollectionBar({
                 ) : (
                   <FolderIconClose />
                 )}
+
                 <Link
                   href="/collections/[collectionid]"
                   as={`/collections/${encodeURIComponent(collections)}`}

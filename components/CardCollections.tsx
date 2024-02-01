@@ -20,7 +20,7 @@ async function CardCollections({ gameId }: Card) {
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
-      .split("/")
+      .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
 
@@ -43,9 +43,7 @@ async function CardCollections({ gameId }: Card) {
     return;
   }
 
-  const formattedDate: string = formatDate(
-    rawgData.released.replace(/-/g, "/")
-  );
+  const formattedDate: string = formatDate(rawgData.released);
 
   return (
     <div className={classes.card}>

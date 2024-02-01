@@ -10,6 +10,14 @@ import { Fragment } from "react";
 import AddGameForm from "@/components/AddGameForm";
 import Link from "next/link";
 import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
+type GenreArray = {
+  gameGenre: Genre[];
+};
+
+type Genre = {
+  id: string;
+  name: string;
+};
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -86,7 +94,39 @@ async function SinglePageInfo({
         collection: collection,
       },
     ]);
+    /////////////////////////////////////////////////////////////
+    if (status === "completed") {
+      const nowDate = new Date();
+      const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+        nowDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
 
+      const { data, error } = await supabase
+        .from("games")
+        .update({ finishedplaying: nowDateFormatted })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    }
+
+    if (status === "currently playing") {
+      const nowDate = new Date();
+      const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+        nowDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+      console.log("nowDateFormatted", nowDateFormatted);
+
+      const { data, error } = await supabase
+        .from("games")
+        .update({ startedplaying: nowDateFormatted })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+
+      console.log("game if for complete is working", status);
+    }
+    /////////////////////////////////////////////////////////////
     revalidatePath(`/videogames/[singlegamepage]/${gameid}`, "page");
   }
 
@@ -188,11 +228,6 @@ async function SinglePageInfo({
     ),
   ];
 
-  //delete this later
-  // const arrayStatus: string[] = games.map((games) => games.status);
-
-  // const filteredArrayStatus: string[] = [...new Set(arrayStatus)];
-
   async function changeCollectionHandler(collectionChange: string) {
     "use server";
     try {
@@ -244,6 +279,46 @@ async function SinglePageInfo({
         .eq("game_info ->> gameName", userData.name)
         .select();
 
+      /////////////////////////////////////////////////////////////////
+      /////////////////////////mark//////////////////
+
+      //i have a column in supabase called startedplaying and a column called finished playing
+      //when that status changes to currently playing print a date on started playing column and read it for the singlegamepage
+      //if the game is moved to finishedplaying print a date to that column and display it on the singlemgame page
+      //later add a way to edit those dates
+      //////
+      // console.log("status changed to ", statusChange);
+      if (statusChange === "completed") {
+        const nowDate = new Date();
+        const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+          nowDate.getMonth() + 1
+        ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+        const { data, error } = await supabase
+          .from("games")
+          .update({ finishedplaying: nowDateFormatted })
+          .eq("user_id", user?.id)
+          .eq("game_info ->> gameName", userData.name)
+          .select();
+      }
+
+      if (statusChange === "currently playing") {
+        const nowDate = new Date();
+        const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+          nowDate.getMonth() + 1
+        ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+        console.log("nowDateFormatted", nowDateFormatted);
+
+        const { data, error } = await supabase
+          .from("games")
+          .update({ startedplaying: nowDateFormatted })
+          .eq("user_id", user?.id)
+          .eq("game_info ->> gameName", userData.name)
+          .select();
+
+        console.log("game if for complete is working", statusChange);
+      }
       revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -278,7 +353,7 @@ async function SinglePageInfo({
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
-      .split("/")
+      .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
 
@@ -297,16 +372,39 @@ async function SinglePageInfo({
     return formattedDate;
   }
 
-  const formattedDate: string = formatDate(
-    userData.released.replace(/-/g, "/")
-  );
+  const formattedDateReleased: string = formatDate(userData.released);
 
   const dateAdded = gameObject.map((game) => game.dateadded);
-  const dateAddedExists = dateAdded.length !== 0 ? true : false;
+  const dateStartedPlaying = gameObject.map((game) => game.startedplaying);
+  const dateFinishedPlaying = gameObject.map((game) => game.finishedplaying);
 
-  const formattedDateAdded: string = formatDate(
-    dateAdded.toString().replace(/-/g, "/")
+  const dateAddedExists = dateAdded.length !== 0 ? true : false;
+  const dateStartedPlayingExists =
+    dateStartedPlaying.length !== 0 && dateStartedPlaying[0] !== null
+      ? true
+      : false;
+  const dateFinishedPlayingExists =
+    dateFinishedPlaying.length !== 0 && dateFinishedPlaying[0] !== null
+      ? true
+      : false;
+
+  ///////
+  console.log(
+    "valid of invalid date finished",
+    dateFinishedPlaying,
+    dateFinishedPlaying.length,
+    dateFinishedPlayingExists
   );
+  /////
+  const formattedDateAdded: string = formatDate(dateAdded.toString());
+  const formattedStartedPlaying: string = formatDate(
+    dateStartedPlaying.toString()
+  );
+  const formattedFinishedPlaying: string = formatDate(
+    dateFinishedPlaying.toString()
+  );
+
+  console.log("game exists", gameExists);
 
   return (
     <Fragment>
@@ -319,9 +417,13 @@ async function SinglePageInfo({
               </div>
 
               <div className={classes.collecitonContainer}>
-                {gameExists && (
+                {gameExists ? (
                   <div className={classes.collection}>
                     <span>In your library</span>
+                  </div>
+                ) : (
+                  <div className={classes.collection}>
+                    <span>Not in library</span>
                   </div>
                 )}
 
@@ -336,7 +438,15 @@ async function SinglePageInfo({
                   </div>
                 ) : (
                   <div className={classes.collection}>
-                    <span>No collection</span>
+                    <span>Not in collection</span>
+                  </div>
+                )}
+              </div>
+
+              <div className={classes.addedContainer}>
+                {dateAddedExists && (
+                  <div className={classes.dateAdded}>
+                    <p>Added to library on {formattedDateAdded}</p>
                   </div>
                 )}
               </div>
@@ -385,12 +495,6 @@ async function SinglePageInfo({
                     />
                   </div>
                 )}
-
-                {/* {gameExists && (
-                  <div className={classes.collection}>
-                    <span>In your library</span>
-                  </div>
-                )} */}
               </div>
             </div>
 
@@ -400,39 +504,80 @@ async function SinglePageInfo({
               </div>
 
               <p>{userData.description_raw}</p>
-              <p>Released on {formattedDate}</p>
 
-              <ul>
-                <li>Platforms:</li>
-                {userData.platforms.map(
-                  (platform: {
-                    platform: { name: string };
-                    released_at: string;
-                  }) => (
-                    <li key={Math.random()}>{` ${platform.platform.name}`}</li>
-                  )
-                )}
-              </ul>
-
-              {dateAddedExists && (
-                <div className={classes.dateAdded}>
-                  <p>Added to library on {formattedDateAdded}</p>
+              {/* start information grid here */}
+              <div className={classes.infoGrid}>
+                <div>
+                  <h1>Released</h1> {formattedDateReleased}
                 </div>
-              )}
 
-              {/*delete game*/}
-              <div className={classes.buttonDelete}>
-                {gameExists && (
-                  <DeleteButton deleteGameHandler={deleteGameHandler} />
-                )}
+                <div>
+                  <h1>Genres</h1>
+                  <ul>
+                    {userData.genres.map((genres: Genre) => (
+                      <li key={genres.id}> {genres.name}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h1>Platforms</h1>
+
+                  <ul>
+                    {userData.platforms.map(
+                      (platform: {
+                        platform: { name: string };
+                        released_at: string;
+                      }) => (
+                        <li
+                          key={Math.random()}
+                        >{` ${platform.platform.name}`}</li>
+                      )
+                    )}
+                  </ul>
+                </div>
+
+                <div>
+                  <h1>Rating</h1>
+                  <p>{userData.rating}/5</p>
+                </div>
+
+                <div>
+                  <h1> Started playing</h1>
+                  {dateStartedPlayingExists && (
+                    <span className={classes.dateAdded}>
+                      {formattedStartedPlaying}
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <h1>Finished playing</h1>
+                  {dateFinishedPlayingExists && (
+                    <span className={classes.dateAdded}>
+                      {formattedFinishedPlaying}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div className={classes.buttonDelete}>
-                {gameExists && (
-                  <RemoveGameFromCollection
-                    removeCollectionHandler={removeCollectionHandler}
-                  />
-                )}
+              {/* end information grid here */}
+
+              {/*delete game*/}
+              <div className={classes.deleteBtnContainer}>
+                <div className={classes.buttonDelete}>
+                  {gameExists && (
+                    <DeleteButton deleteGameHandler={deleteGameHandler} />
+                  )}
+                </div>
+
+                <div className={classes.buttonDelete}>
+                  {gameExists && (
+                    <RemoveGameFromCollection
+                      removeCollectionHandler={removeCollectionHandler}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </Fragment>

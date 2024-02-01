@@ -9,10 +9,10 @@ type Card = {
   gameImg: string;
   gameRating: number;
   gameDate: string;
-  gameGenere: Genere[];
+  gameGenre: Genre[];
 };
 
-type Genere = {
+type Genre = {
   id: string;
   name: string;
 };
@@ -23,12 +23,12 @@ function Card({
   gameImg,
   gameRating,
   gameDate,
-  gameGenere,
+  gameGenre,
 }: Card) {
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
-      .split("/")
+      .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
 
@@ -51,7 +51,7 @@ function Card({
     return;
   }
 
-  const formattedDate: string = formatDate(gameDate.replace(/-/g, "/"));
+  const formattedDate: string = formatDate(gameDate);
 
   ///////
   return (
@@ -77,7 +77,7 @@ function Card({
       </div>
       <div className={classes.generes}>
         <ul>
-          {gameGenere.map((genere: Genere) => (
+          {gameGenre.map((genere: Genre) => (
             <li key={genere.id}>{genere.name}</li>
           ))}
         </ul>

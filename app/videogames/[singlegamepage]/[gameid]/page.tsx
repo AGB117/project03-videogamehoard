@@ -115,18 +115,14 @@ async function SinglePageInfo({
         nowDate.getMonth() + 1
       ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
 
-      console.log("nowDateFormatted", nowDateFormatted);
-
       const { data, error } = await supabase
         .from("games")
         .update({ startedplaying: nowDateFormatted })
         .eq("user_id", user?.id)
         .eq("game_info ->> gameName", userData.name)
         .select();
-
-      console.log("game if for complete is working", status);
     }
-    /////////////////////////////////////////////////////////////
+
     revalidatePath(`/videogames/[singlegamepage]/${gameid}`, "page");
   }
 
@@ -279,15 +275,6 @@ async function SinglePageInfo({
         .eq("game_info ->> gameName", userData.name)
         .select();
 
-      /////////////////////////////////////////////////////////////////
-      /////////////////////////mark//////////////////
-
-      //i have a column in supabase called startedplaying and a column called finished playing
-      //when that status changes to currently playing print a date on started playing column and read it for the singlegamepage
-      //if the game is moved to finishedplaying print a date to that column and display it on the singlemgame page
-      //later add a way to edit those dates
-      //////
-      // console.log("status changed to ", statusChange);
       if (statusChange === "completed") {
         const nowDate = new Date();
         const nowDateFormatted = `${nowDate.getFullYear()}-${String(
@@ -308,16 +295,12 @@ async function SinglePageInfo({
           nowDate.getMonth() + 1
         ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
 
-        console.log("nowDateFormatted", nowDateFormatted);
-
         const { data, error } = await supabase
           .from("games")
           .update({ startedplaying: nowDateFormatted })
           .eq("user_id", user?.id)
           .eq("game_info ->> gameName", userData.name)
           .select();
-
-        console.log("game if for complete is working", statusChange);
       }
       revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
     } catch (error: unknown) {
@@ -388,14 +371,6 @@ async function SinglePageInfo({
       ? true
       : false;
 
-  ///////
-  console.log(
-    "valid of invalid date finished",
-    dateFinishedPlaying,
-    dateFinishedPlaying.length,
-    dateFinishedPlayingExists
-  );
-  /////
   const formattedDateAdded: string = formatDate(dateAdded.toString());
   const formattedStartedPlaying: string = formatDate(
     dateStartedPlaying.toString()
@@ -403,8 +378,6 @@ async function SinglePageInfo({
   const formattedFinishedPlaying: string = formatDate(
     dateFinishedPlaying.toString()
   );
-
-  console.log("game exists", gameExists);
 
   return (
     <Fragment>

@@ -62,7 +62,7 @@ async function SearchResults({
                 gameImg={game.background_image}
                 gameRating={game.rating}
                 gameDate={game.released}
-                gameGenere={game.genres}
+                gameGenre={game.genres}
               />
             </div>
           ))}

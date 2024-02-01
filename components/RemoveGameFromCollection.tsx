@@ -13,7 +13,7 @@ function RemoveGameFromCollection({ removeCollectionHandler }: Delete) {
   return (
     <div className={classes.button}>
       <button onClick={removeFromCollectionHandler}>
-        Remove game from collection
+        Remove from collection
       </button>
     </div>
   );

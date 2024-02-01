@@ -10,6 +10,14 @@ import { Fragment } from "react";
 import AddGameForm from "@/components/AddGameForm";
 import Link from "next/link";
 import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
+type GenreArray = {
+  gameGenre: Genre[];
+};
+
+type Genre = {
+  id: string;
+  name: string;
+};
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -396,6 +404,8 @@ async function SinglePageInfo({
     dateFinishedPlaying.toString()
   );
 
+  console.log("game exists", gameExists);
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -407,9 +417,13 @@ async function SinglePageInfo({
               </div>
 
               <div className={classes.collecitonContainer}>
-                {gameExists && (
+                {gameExists ? (
                   <div className={classes.collection}>
                     <span>In your library</span>
+                  </div>
+                ) : (
+                  <div className={classes.collection}>
+                    <span>Not in library</span>
                   </div>
                 )}
 
@@ -424,7 +438,15 @@ async function SinglePageInfo({
                   </div>
                 ) : (
                   <div className={classes.collection}>
-                    <span>No collection</span>
+                    <span>Not in collection</span>
+                  </div>
+                )}
+              </div>
+
+              <div className={classes.addedContainer}>
+                {dateAddedExists && (
+                  <div className={classes.dateAdded}>
+                    <p>Added to library on {formattedDateAdded}</p>
                   </div>
                 )}
               </div>
@@ -473,12 +495,6 @@ async function SinglePageInfo({
                     />
                   </div>
                 )}
-
-                {/* {gameExists && (
-                  <div className={classes.collection}>
-                    <span>In your library</span>
-                  </div>
-                )} */}
               </div>
             </div>
 
@@ -488,53 +504,80 @@ async function SinglePageInfo({
               </div>
 
               <p>{userData.description_raw}</p>
-              <p>Released on {formattedDateReleased}</p>
 
-              <ul>
-                <li>Platforms:</li>
-                {userData.platforms.map(
-                  (platform: {
-                    platform: { name: string };
-                    released_at: string;
-                  }) => (
-                    <li key={Math.random()}>{` ${platform.platform.name}`}</li>
-                  )
-                )}
-              </ul>
-
-              {dateAddedExists && (
-                <div className={classes.dateAdded}>
-                  <p>Added to library on {formattedDateAdded}</p>
+              {/* start information grid here */}
+              <div className={classes.infoGrid}>
+                <div>
+                  <h1>Released</h1> {formattedDateReleased}
                 </div>
-              )}
 
-              {<p>My activity</p>}
-              <p>Started playing on</p>
-              {dateStartedPlayingExists && (
-                <div className={classes.dateAdded}>
-                  {formattedStartedPlaying}
+                <div>
+                  <h1>Genres</h1>
+                  <ul>
+                    {userData.genres.map((genres: Genre) => (
+                      <li key={genres.id}> {genres.name}</li>
+                    ))}
+                  </ul>
                 </div>
-              )}
-              <p>Finished playing on</p>
-              {dateFinishedPlayingExists && (
-                <div className={classes.dateAdded}>
-                  {formattedFinishedPlaying}
-                </div>
-              )}
 
-              {/*delete game*/}
-              <div className={classes.buttonDelete}>
-                {gameExists && (
-                  <DeleteButton deleteGameHandler={deleteGameHandler} />
-                )}
+                <div>
+                  <h1>Platforms</h1>
+
+                  <ul>
+                    {userData.platforms.map(
+                      (platform: {
+                        platform: { name: string };
+                        released_at: string;
+                      }) => (
+                        <li
+                          key={Math.random()}
+                        >{` ${platform.platform.name}`}</li>
+                      )
+                    )}
+                  </ul>
+                </div>
+
+                <div>
+                  <h1>Rating</h1>
+                  <p>{userData.rating}/5</p>
+                </div>
+
+                <div>
+                  <h1> Started playing</h1>
+                  {dateStartedPlayingExists && (
+                    <span className={classes.dateAdded}>
+                      {formattedStartedPlaying}
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <h1>Finished playing</h1>
+                  {dateFinishedPlayingExists && (
+                    <span className={classes.dateAdded}>
+                      {formattedFinishedPlaying}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div className={classes.buttonDelete}>
-                {gameExists && (
-                  <RemoveGameFromCollection
-                    removeCollectionHandler={removeCollectionHandler}
-                  />
-                )}
+              {/* end information grid here */}
+
+              {/*delete game*/}
+              <div className={classes.deleteBtnContainer}>
+                <div className={classes.buttonDelete}>
+                  {gameExists && (
+                    <DeleteButton deleteGameHandler={deleteGameHandler} />
+                  )}
+                </div>
+
+                <div className={classes.buttonDelete}>
+                  {gameExists && (
+                    <RemoveGameFromCollection
+                      removeCollectionHandler={removeCollectionHandler}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </Fragment>

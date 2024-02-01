@@ -9,7 +9,7 @@ function AddButton({ deleteGameHandler }: deleteGame) {
 
   return (
     <div>
-      <button onClick={deleteGameButton}>Delete Game from library</button>
+      <button onClick={deleteGameButton}>Delete from library</button>
     </div>
   );
 }

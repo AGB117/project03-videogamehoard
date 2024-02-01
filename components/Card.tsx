@@ -9,10 +9,10 @@ type Card = {
   gameImg: string;
   gameRating: number;
   gameDate: string;
-  gameGenere: Genere[];
+  gameGenre: Genre[];
 };
 
-type Genere = {
+type Genre = {
   id: string;
   name: string;
 };
@@ -23,7 +23,7 @@ function Card({
   gameImg,
   gameRating,
   gameDate,
-  gameGenere,
+  gameGenre,
 }: Card) {
   //format date
   function formatDate(inputDate: string): string {
@@ -77,7 +77,7 @@ function Card({
       </div>
       <div className={classes.generes}>
         <ul>
-          {gameGenere.map((genere: Genere) => (
+          {gameGenre.map((genere: Genre) => (
             <li key={genere.id}>{genere.name}</li>
           ))}
         </ul>

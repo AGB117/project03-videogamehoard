@@ -40,6 +40,7 @@ async function SinglePageInfo({
   const response = await fetch(
     `https://api.rawg.io/api/games/${gameid}?key=${process.env.RAWG_API_KEY}`
   );
+
   const userData = await response.json();
 
   const cookieStore = cookies();
@@ -226,10 +227,11 @@ async function SinglePageInfo({
 
   async function changeCollectionHandler(collectionChange: string) {
     "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
     try {
       //handler for changing the game collection
-      const cookieStore = cookies();
-      const supabase = createClient(cookieStore);
 
       const {
         data: { user },
@@ -259,10 +261,11 @@ async function SinglePageInfo({
 
   async function changeStatusHandler(statusChange: string) {
     "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
     try {
-      //handler for changing the game collection
-      const cookieStore = cookies();
-      const supabase = createClient(cookieStore);
+      //handler for changing the game status
 
       const {
         data: { user },
@@ -389,42 +392,7 @@ async function SinglePageInfo({
                 <img src={userData.background_image} alt="game image" />
               </div>
 
-              <div className={classes.collecitonContainer}>
-                {gameExists ? (
-                  <div className={classes.collection}>
-                    <span>In your library</span>
-                  </div>
-                ) : (
-                  <div className={classes.collection}>
-                    <span>Not in library</span>
-                  </div>
-                )}
-
-                {gameInCollection ? (
-                  <div className={classes.collection}>
-                    <Link
-                      href="/collections/[collectionid]"
-                      as={`/collections/${encodeURIComponent(
-                        gameCollectionName
-                      )}`}
-                    >{`${gameCollection}`}</Link>
-                  </div>
-                ) : (
-                  <div className={classes.collection}>
-                    <span>Not in collection</span>
-                  </div>
-                )}
-              </div>
-
-              <div className={classes.addedContainer}>
-                {dateAddedExists && (
-                  <div className={classes.dateAdded}>
-                    <p>Added to library on {formattedDateAdded}</p>
-                  </div>
-                )}
-              </div>
-
-              {/*colleciton and status handlerss*/}
+              {/*collection and status handlerss*/}
               <div className={classes.handlers}>
                 {gameExists && (
                   <Fragment>
@@ -480,6 +448,42 @@ async function SinglePageInfo({
 
               {/* start information grid here */}
               <div className={classes.infoGrid}>
+                {/* /////////////////////////// */}
+
+                <div className={classes.collection}>
+                  {gameExists ? (
+                    <div>
+                      Added to library
+                      {dateAddedExists && (
+                        <div className={classes.dateAdded}>
+                          <div>{formattedDateAdded}</div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div>Not in library</div>
+                  )}
+                </div>
+
+                <div className={classes.collection}>
+                  <div> Collection</div>
+                  {gameInCollection ? (
+                    <>
+                      <Link
+                        href="/collections/[collectionid]"
+                        as={`/collections/${encodeURIComponent(
+                          gameCollectionName
+                        )}`}
+                      >{`${gameCollection}`}</Link>
+                    </>
+                  ) : (
+                    <div className={classes.notInCollection}>
+                      Not in collection
+                    </div>
+                  )}
+                </div>
+
+                {/* /////////////////////////// */}
                 <div>
                   <h1>Released</h1> {formattedDateReleased}
                 </div>

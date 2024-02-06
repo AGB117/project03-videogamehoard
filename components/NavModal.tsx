@@ -1,11 +1,11 @@
 import ReactDOM from "react-dom";
 import Link from "next/link";
-import classes from "./Modal.module.css";
+import classes from "./NavModal.module.css";
 import { X } from "@phosphor-icons/react";
 
 type ModalType = { modalHandler: () => void; modalAnimation: boolean };
 
-function Modal({ modalHandler, modalAnimation }: ModalType) {
+function NavModal({ modalHandler, modalAnimation }: ModalType) {
   return ReactDOM.createPortal(
     <div
       className={`${classes.overlay} ${
@@ -45,4 +45,4 @@ function Modal({ modalHandler, modalAnimation }: ModalType) {
   );
 }
 
-export default Modal;
+export default NavModal;

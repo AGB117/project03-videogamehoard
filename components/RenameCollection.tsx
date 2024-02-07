@@ -1,7 +1,7 @@
 "use client";
 import React, { ChangeEvent, Fragment, useRef, useState } from "react";
 import classes from "./DeleteCollection.module.css";
-import RenameModal from "./RenameModal";
+import RenameCollectionModal from "./RenameCollectionModal";
 
 type Renemae = {
   renameCollectionHandler: (formData: FormData) => void;
@@ -18,7 +18,7 @@ function RenameCollection({ renameCollectionHandler }: Renemae) {
   //handlers
   function renameCollection(collectionRename: FormData) {
     renameCollectionHandler(collectionRename);
-    console.log("rename to", collectionRename);
+    // console.log("rename to", collectionRename);
   }
 
   return (
@@ -27,7 +27,7 @@ function RenameCollection({ renameCollectionHandler }: Renemae) {
         <button onClick={modalOpenHandler}>Rename collection</button>
       </div>
       {modalOpen && (
-        <RenameModal
+        <RenameCollectionModal
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           renameCollection={renameCollection}

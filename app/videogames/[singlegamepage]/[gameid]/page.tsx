@@ -10,9 +10,8 @@ import { Fragment } from "react";
 import AddGameForm from "@/components/AddGameForm";
 import Link from "next/link";
 import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
-type GenreArray = {
-  gameGenre: Genre[];
-};
+import StartedPlaying from "@/components/StartedPlaying";
+import Finishedplaying from "@/components/FinishedPlaying";
 
 type Genre = {
   id: string;
@@ -320,6 +319,70 @@ async function SinglePageInfo({
     }
   }
 
+  async function ChangeStartedPlayingDate(date: string) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    if (!user) {
+      return;
+    }
+
+    try {
+      const { data: renameCollection, error } = await supabase
+        .from("games")
+        .update({ startedplaying: date })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+    console.log(date);
+    revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
+  }
+
+  async function ChangeFinishedPlayingDate(date: string) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    if (!user) {
+      return;
+    }
+
+    try {
+      const { data: renameCollection, error } = await supabase
+        .from("games")
+        .update({ finishedplaying: date })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+    console.log(date);
+    revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
+  }
+
   //this is to check if the game exists in your collection
   const { data: owned, error: errorOwnedGame } = await supabase
     .from("games")
@@ -526,6 +589,9 @@ async function SinglePageInfo({
                       {formattedStartedPlaying}
                     </span>
                   )}
+                  <StartedPlaying
+                    ChangeStartedPlayingDate={ChangeStartedPlayingDate}
+                  />
                 </div>
 
                 <div>
@@ -535,6 +601,9 @@ async function SinglePageInfo({
                       {formattedFinishedPlaying}
                     </span>
                   )}
+                  <Finishedplaying
+                    ChangeFinishedPlayingDate={ChangeFinishedPlayingDate}
+                  />
                 </div>
               </div>
 

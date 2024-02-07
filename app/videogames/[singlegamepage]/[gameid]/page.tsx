@@ -589,14 +589,14 @@ async function SinglePageInfo({
 
                 <div>
                   <h1> Started playing</h1>
-                  {dateStartedPlayingExists && (
+                  {dateStartedPlayingExists && gameExists && (
                     <span className={classes.dateAdded}>
                       {formattedStartedPlaying}
+                      <StartedPlaying
+                        ChangeStartedPlayingDate={ChangeStartedPlayingDate}
+                      />
                     </span>
                   )}
-                  <StartedPlaying
-                    ChangeStartedPlayingDate={ChangeStartedPlayingDate}
-                  />
                 </div>
 
                 <div>
@@ -605,11 +605,11 @@ async function SinglePageInfo({
                     currentStatus === "completed" && (
                       <span className={classes.dateAdded}>
                         {formattedFinishedPlaying}
+                        <Finishedplaying
+                          ChangeFinishedPlayingDate={ChangeFinishedPlayingDate}
+                        />
                       </span>
                     )}
-                  <Finishedplaying
-                    ChangeFinishedPlayingDate={ChangeFinishedPlayingDate}
-                  />
                 </div>
               </div>
 

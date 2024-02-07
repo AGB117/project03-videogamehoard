@@ -448,6 +448,7 @@ async function SinglePageInfo({
   const currentStatus = gameObject
     ?.map((gameStatus) => gameStatus.status.replace(/\s+/g, ""))
     .toString();
+  console.log(currentStatus);
 
   return (
     <Fragment>

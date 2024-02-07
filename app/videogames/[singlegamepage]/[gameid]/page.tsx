@@ -445,6 +445,10 @@ async function SinglePageInfo({
     dateFinishedPlaying.toString()
   );
 
+  const currentStatus = gameObject
+    ?.map((gameStatus) => gameStatus.status.replace(/\s+/g, ""))
+    .toString();
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -596,11 +600,12 @@ async function SinglePageInfo({
 
                 <div>
                   <h1>Finished playing</h1>
-                  {dateFinishedPlayingExists && (
-                    <span className={classes.dateAdded}>
-                      {formattedFinishedPlaying}
-                    </span>
-                  )}
+                  {dateFinishedPlayingExists &&
+                    currentStatus === "completed" && (
+                      <span className={classes.dateAdded}>
+                        {formattedFinishedPlaying}
+                      </span>
+                    )}
                   <Finishedplaying
                     ChangeFinishedPlayingDate={ChangeFinishedPlayingDate}
                   />

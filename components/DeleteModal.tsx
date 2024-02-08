@@ -1,6 +1,6 @@
 "use client";
 import ReactDOM from "react-dom";
-import classes from "@/components/Modal.module.css";
+import classes from "@/components/NavModal.module.css";
 
 type DeleteModalType = {
   setModalOpen: (modalOpen: boolean) => void;

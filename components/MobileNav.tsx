@@ -3,7 +3,7 @@ import Link from "next/link";
 import classes from "./NavBar.module.css";
 import { useEffect, useState } from "react";
 import { List } from "@phosphor-icons/react";
-import Modal from "./Modal";
+import NavModal from "./NavModal";
 
 function MobileNav() {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -40,7 +40,7 @@ function MobileNav() {
       </div>
 
       {openModal && (
-        <Modal modalHandler={modalHandler} modalAnimation={modalAnimation} />
+        <NavModal modalHandler={modalHandler} modalAnimation={modalAnimation} />
       )}
     </div>
   );

@@ -10,9 +10,8 @@ import { Fragment } from "react";
 import AddGameForm from "@/components/AddGameForm";
 import Link from "next/link";
 import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
-type GenreArray = {
-  gameGenre: Genre[];
-};
+import StartedPlaying from "@/components/StartedPlaying";
+import Finishedplaying from "@/components/FinishedPlaying";
 
 type Genre = {
   id: string;
@@ -40,6 +39,7 @@ async function SinglePageInfo({
   const response = await fetch(
     `https://api.rawg.io/api/games/${gameid}?key=${process.env.RAWG_API_KEY}`
   );
+
   const userData = await response.json();
 
   const cookieStore = cookies();
@@ -226,10 +226,11 @@ async function SinglePageInfo({
 
   async function changeCollectionHandler(collectionChange: string) {
     "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
     try {
       //handler for changing the game collection
-      const cookieStore = cookies();
-      const supabase = createClient(cookieStore);
 
       const {
         data: { user },
@@ -259,10 +260,11 @@ async function SinglePageInfo({
 
   async function changeStatusHandler(statusChange: string) {
     "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
     try {
-      //handler for changing the game collection
-      const cookieStore = cookies();
-      const supabase = createClient(cookieStore);
+      //handler for changing the game status
 
       const {
         data: { user },
@@ -315,6 +317,70 @@ async function SinglePageInfo({
         alert("An unknown error occurred");
       }
     }
+  }
+
+  async function ChangeStartedPlayingDate(date: string) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    if (!user) {
+      return;
+    }
+
+    try {
+      const { data: renameCollection, error } = await supabase
+        .from("games")
+        .update({ startedplaying: date })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+    console.log(date);
+    revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
+  }
+
+  async function ChangeFinishedPlayingDate(date: string) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    if (!user) {
+      return;
+    }
+
+    try {
+      const { data: renameCollection, error } = await supabase
+        .from("games")
+        .update({ finishedplaying: date })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+
+    revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
   }
 
   //this is to check if the game exists in your collection
@@ -379,6 +445,10 @@ async function SinglePageInfo({
     dateFinishedPlaying.toString()
   );
 
+  const currentStatus = gameObject
+    ?.map((gameStatus) => gameStatus.status.replace(/\s+/g, ""))
+    .toString();
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -389,42 +459,7 @@ async function SinglePageInfo({
                 <img src={userData.background_image} alt="game image" />
               </div>
 
-              <div className={classes.collecitonContainer}>
-                {gameExists ? (
-                  <div className={classes.collection}>
-                    <span>In your library</span>
-                  </div>
-                ) : (
-                  <div className={classes.collection}>
-                    <span>Not in library</span>
-                  </div>
-                )}
-
-                {gameInCollection ? (
-                  <div className={classes.collection}>
-                    <Link
-                      href="/collections/[collectionid]"
-                      as={`/collections/${encodeURIComponent(
-                        gameCollectionName
-                      )}`}
-                    >{`${gameCollection}`}</Link>
-                  </div>
-                ) : (
-                  <div className={classes.collection}>
-                    <span>Not in collection</span>
-                  </div>
-                )}
-              </div>
-
-              <div className={classes.addedContainer}>
-                {dateAddedExists && (
-                  <div className={classes.dateAdded}>
-                    <p>Added to library on {formattedDateAdded}</p>
-                  </div>
-                )}
-              </div>
-
-              {/*colleciton and status handlerss*/}
+              {/*collection and status handlerss*/}
               <div className={classes.handlers}>
                 {gameExists && (
                   <Fragment>
@@ -480,6 +515,42 @@ async function SinglePageInfo({
 
               {/* start information grid here */}
               <div className={classes.infoGrid}>
+                {/* /////////////////////////// */}
+
+                <div className={classes.collection}>
+                  {gameExists ? (
+                    <div>
+                      Added to library
+                      {dateAddedExists && (
+                        <div className={classes.dateAdded}>
+                          <div>{formattedDateAdded}</div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div>Not in library</div>
+                  )}
+                </div>
+
+                <div className={classes.collection}>
+                  <div> Collection</div>
+                  {gameInCollection ? (
+                    <>
+                      <Link
+                        href="/collections/[collectionid]"
+                        as={`/collections/${encodeURIComponent(
+                          gameCollectionName
+                        )}`}
+                      >{`${gameCollection}`}</Link>
+                    </>
+                  ) : (
+                    <div className={classes.notInCollection}>
+                      Not in collection
+                    </div>
+                  )}
+                </div>
+
+                {/* /////////////////////////// */}
                 <div>
                   <h1>Released</h1> {formattedDateReleased}
                 </div>
@@ -517,33 +588,33 @@ async function SinglePageInfo({
 
                 <div>
                   <h1> Started playing</h1>
-                  {dateStartedPlayingExists && (
+                  {dateStartedPlayingExists && gameExists && (
                     <span className={classes.dateAdded}>
                       {formattedStartedPlaying}
+                      <StartedPlaying
+                        ChangeStartedPlayingDate={ChangeStartedPlayingDate}
+                      />
                     </span>
                   )}
                 </div>
 
                 <div>
                   <h1>Finished playing</h1>
-                  {dateFinishedPlayingExists && (
-                    <span className={classes.dateAdded}>
-                      {formattedFinishedPlaying}
-                    </span>
-                  )}
+                  {dateFinishedPlayingExists &&
+                    currentStatus === "completed" && (
+                      <span className={classes.dateAdded}>
+                        {formattedFinishedPlaying}
+                        <Finishedplaying
+                          ChangeFinishedPlayingDate={ChangeFinishedPlayingDate}
+                        />
+                      </span>
+                    )}
                 </div>
-              </div>
-
-              {/* end information grid here */}
-
-              {/*delete game*/}
-              <div className={classes.deleteBtnContainer}>
                 <div className={classes.buttonDelete}>
                   {gameExists && (
                     <DeleteButton deleteGameHandler={deleteGameHandler} />
                   )}
                 </div>
-
                 <div className={classes.buttonDelete}>
                   {gameExists && (
                     <RemoveGameFromCollection

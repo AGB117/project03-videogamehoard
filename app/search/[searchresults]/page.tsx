@@ -39,9 +39,10 @@ async function SearchResults({
   };
 }) {
   const response = await fetch(
-    `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&search=${searchresults}`,
+    `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&page=1&page_size=30&search=${searchresults}`,
     {}
   );
+
   const userData = await response.json();
 
   const gameResults = userData.results;

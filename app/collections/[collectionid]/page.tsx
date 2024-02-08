@@ -4,11 +4,10 @@ import { redirect } from "next/navigation";
 import classes from "./page.module.css";
 import { Fragment } from "react";
 import { revalidatePath } from "next/cache";
-// import Card from "@/components/Card";
 import CollectionBar from "@/components/CollectionBar";
 import DeleteCollection from "@/components/DeleteCollection";
-// import { type GameList } from "@/app/search/[searchresults]/page";
 import CardCollections from "@/components/CardCollections";
+import RenameCollection from "@/components/RenameCollection";
 
 export type GameObject = {
   gameId: number;
@@ -127,17 +126,17 @@ async function SingleCollection({
     "use server";
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
+    const nameCollection = formData.get("name");
+    const nameCollectrionTrim = nameCollection
+      ?.toString()
+      .trim()
+      .replace(/\s+/g, " ");
+
+    if (!user) {
+      return;
+    }
+
     try {
-      const nameCollection = formData.get("name");
-      const nameCollectrionTrim = nameCollection
-        ?.toString()
-        .trim()
-        .replace(/\s+/g, " ");
-
-      if (!user) {
-        return;
-      }
-
       const { data: newCollection } = await supabase.from("games").insert([
         {
           collection: nameCollectrionTrim,
@@ -210,6 +209,48 @@ async function SingleCollection({
     }
 
     redirect("/collections/all");
+  }
+
+  //rename collection handler
+  async function renameCollectionHandler(formData: FormData) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    const nameCollection = formData.get("collectionRename");
+    const nameCollectrionTrim = nameCollection
+      ?.toString()
+      .trim()
+      .replace(/\s+/g, " ");
+
+    console.log("collection renamed to", nameCollectrionTrim);
+
+    if (!user) {
+      return;
+    }
+
+    try {
+      const { data: renameCollection, error } = await supabase
+        .from("games")
+        .update({ collection: nameCollectrionTrim })
+        .eq("user_id", user?.id)
+        .eq("collection", decodeURIComponent(collectionid))
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+    redirect(`/collections/${nameCollectrionTrim}`);
+
+    // revalidatePath(`/collections/${collectionid}`, "page");
   }
 
   // console.log(decodeURIComponent(collectionid));
@@ -300,10 +341,15 @@ async function SingleCollection({
             collectionid === "currently%20playing"
               ? false
               : true) && (
-              <DeleteCollection
-                collectionid={collectionid}
-                deleteCollectionHandler={deleteCollectionHandler}
-              />
+              <>
+                <DeleteCollection
+                  collectionid={collectionid}
+                  deleteCollectionHandler={deleteCollectionHandler}
+                />
+                <RenameCollection
+                  renameCollectionHandler={renameCollectionHandler}
+                />
+              </>
             )}
           </div>
         </div>

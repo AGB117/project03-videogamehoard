@@ -22,7 +22,7 @@ function DeleteCollection({ deleteCollectionHandler, collectionid }: Delete) {
   return (
     <Fragment>
       <div className={classes.button}>
-        <button onClick={modalOpenHandler}>Delete Collection</button>
+        <button onClick={modalOpenHandler}>Delete collection</button>
       </div>
       {modalOpen && (
         <DeleteModal

@@ -6,7 +6,6 @@
 
 .container p {
   font-size: 1.8rem;
-  /* margin-bottom: 5rem; */
 }
 
 .container h1 {
@@ -36,10 +35,6 @@
 .container li:not(:last-child)::after {
   content: ",\00a0";
 }
-
-/* .container li:nth-child(0)::after {
-  content: "";
-} */
 
 .container li:last-child::after {
   content: ".";
@@ -124,27 +119,6 @@
   justify-content: space-between;
 }
 
-.collecitonContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5rem;
-  gap: 10rem;
-}
-
-.addedContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
-}
-
-.collection span {
-  display: flex;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 1.8rem;
-}
-
 .collection a {
   font-size: 1.6rem;
   background-color: #87ceebff;
@@ -199,7 +173,7 @@
   transition: all 0.3s ease;
   cursor: pointer;
   margin-bottom: 3rem;
-  flex: 1;
+  white-space: nowrap;
 }
 
 .buttonDelete button:hover {
@@ -212,7 +186,8 @@
 }
 
 .dateAdded {
-  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: normal;
 }
 
 .deleteBtnContainer {
@@ -225,7 +200,7 @@
   display: grid;
   font-size: 2rem;
   grid-template-columns: repeat(2, 2fr);
-  /* width: 100%; */
+  margin-top: 5rem;
 }
 
 .infoGrid h1 {
@@ -239,12 +214,30 @@
   padding: 0;
 }
 
+.notInCollection {
+  font-weight: normal;
+}
+.collection {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.buttonDelete {
+  display: flex;
+  margin-top: 6rem;
+  /* align-items: center; */
+}
+
 /*media handling*/
 
 @media (max-width: 1600px) {
   .container {
     flex-direction: column;
     align-items: center;
+  }
+
+  .container h1 {
+    margin-top: 0rem;
   }
 
   .leftSide {
@@ -278,18 +271,12 @@
     justify-content: center;
   }
 
-  .collection {
-    justify-content: center;
-    margin: 2rem 0rem;
+  .handlers {
+    margin: 1rem 0rem;
   }
 
   .buttonDelete {
-    display: flex;
-    justify-content: center;
-  }
-
-  .handlers {
-    margin: 1rem 0rem;
+    margin-top: 3rem;
   }
 }
 
@@ -305,9 +292,5 @@
   .rightSide {
     width: auto;
     margin: 0rem 2rem 2rem 2rem;
-  }
-  .collecitonContainer {
-    margin-top: 2rem;
-    gap: 5rem;
   }
 }

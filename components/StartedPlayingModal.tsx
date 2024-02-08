@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import classes from "./StartedPlaying.module.css";
 import ReactDOM from "react-dom";
+
+import DatePicker from "react-datepicker";
 
 type startedPlayingModal = {
   setModalOpen: (modalOpen: boolean) => void;

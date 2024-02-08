@@ -75,6 +75,7 @@ $mantis: rgb(102, 187, 106);
 
 html {
   font-size: 62.5%;
+
   scroll-behavior: smooth;
 }
 
@@ -87,4 +88,62 @@ body {
 
 main {
   min-height: 90vh;
+}
+
+/* ///////////DATE PCIKER CSS///////////// */
+.react-datepicker {
+  width: 35rem;
+}
+
+.react-datepicker__month-container {
+  width: 100%;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  font-size: 2rem !important;
+  margin: 1rem 0rem !important;
+}
+
+.react-datepicker__day,
+.react-datepicker__month-text,
+.react-datepicker__quarter-text,
+.react-datepicker__year-text {
+  margin: 1rem 1rem 1rem 2rem !important;
+}
+
+.react-datepicker__month {
+  font-size: 1.8rem !important;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  margin: 1rem 1rem 1rem 2rem !important;
+  font-size: 1.4rem !important;
+}
+
+.react-datepicker__day-names {
+  margin-left: -2rem;
+}
+
+.react-datepicker__week {
+  margin-left: -2rem;
+}
+
+.react-datepicker__navigation--next {
+  margin: 1rem 1rem 0rem 0rem;
+}
+
+.react-datepicker__navigation--previous {
+  margin: 1rem 0rem 0rem 1rem;
+}
+
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
 }

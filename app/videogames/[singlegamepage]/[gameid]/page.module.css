@@ -228,7 +228,6 @@
   font-size: 2rem;
   grid-template-columns: repeat(2, 2fr);
   margin-top: 5rem;
-  /* width: 100%; */
 }
 
 .infoGrid h1 {
@@ -244,6 +243,16 @@
 
 .notInCollection {
   font-weight: normal;
+}
+.collection {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.buttonDelete {
+  display: flex;
+  margin-top: 6rem;
+  /* align-items: center; */
 }
 
 /*media handling*/
@@ -285,18 +294,12 @@
     justify-content: center;
   }
 
-  .collection {
-    font-size: 2rem;
-    font-weight: 600;
+  .handlers {
+    margin: 1rem 0rem;
   }
 
   .buttonDelete {
-    display: flex;
-    justify-content: center;
-  }
-
-  .handlers {
-    margin: 1rem 0rem;
+    margin-top: 3rem;
   }
 }
 
@@ -313,8 +316,4 @@
     width: auto;
     margin: 0rem 2rem 2rem 2rem;
   }
-  /* .collectionContainer {
-    margin-top: 2rem;
-    gap: 5rem;
-  } */
 }

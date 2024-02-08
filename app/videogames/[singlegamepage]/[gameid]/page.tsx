@@ -379,7 +379,7 @@ async function SinglePageInfo({
         alert("An unknown error occurred");
       }
     }
-    console.log(date);
+
     revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
   }
 
@@ -448,7 +448,6 @@ async function SinglePageInfo({
   const currentStatus = gameObject
     ?.map((gameStatus) => gameStatus.status.replace(/\s+/g, ""))
     .toString();
-  console.log(currentStatus);
 
   return (
     <Fragment>
@@ -611,12 +610,24 @@ async function SinglePageInfo({
                       </span>
                     )}
                 </div>
+                <div className={classes.buttonDelete}>
+                  {gameExists && (
+                    <DeleteButton deleteGameHandler={deleteGameHandler} />
+                  )}
+                </div>
+                <div className={classes.buttonDelete}>
+                  {gameExists && (
+                    <RemoveGameFromCollection
+                      removeCollectionHandler={removeCollectionHandler}
+                    />
+                  )}
+                </div>
               </div>
 
               {/* end information grid here */}
 
               {/*delete game*/}
-              <div className={classes.deleteBtnContainer}>
+              {/* <div className={classes.deleteBtnContainer}>
                 <div className={classes.buttonDelete}>
                   {gameExists && (
                     <DeleteButton deleteGameHandler={deleteGameHandler} />
@@ -630,7 +641,7 @@ async function SinglePageInfo({
                     />
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
           </Fragment>
         )}

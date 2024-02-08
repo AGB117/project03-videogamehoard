@@ -108,3 +108,12 @@
   width: 100%;
   height: 100%;
 }
+
+.formContainer label {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.calendarIcon {
+  margin-left: 2rem;
+}

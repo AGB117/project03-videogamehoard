@@ -147,3 +147,33 @@ main {
   width: 1.8rem !important;
   height: 1.8rem !important;
 }
+
+#datePicker {
+  border: 0.1rem solid black;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #66bb6aff !important;
+  /* padding-right: 75% !important; */
+}
+.react-datepicker__day--selected {
+  background-color: #66bb6aff !important;
+  color: black !important;
+  /* padding-right: 5% !important; */
+}
+
+.react-datepicker__day {
+  font-size: 1.6rem !important;
+  /* padding-right: 5% !important; */
+}
+
+.react-datepicker__day-name {
+  font-size: 1.6rem !important;
+  /* padding-right: 5% !important; */
+}
+.react-datepicker__day:hover {
+  background-color: #b2f2bb !important;
+  /* padding-right: 5% !important; */
+}

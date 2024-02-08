@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import classes from "./StartedPlaying.module.css";
 import ReactDOM from "react-dom";
-
+import { Calendar } from "@phosphor-icons/react";
 import DatePicker from "react-datepicker";
 
 type startedPlayingModal = {
@@ -31,6 +31,16 @@ function StartedPlayingModal({
     setModalOpen(false);
   }
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      //placeholder
+      const element = document.getElementById("datePicker") as HTMLInputElement;
+      if (element) {
+        element.placeholder = "Select date";
+      }
+    }
+  }, []);
+
   return ReactDOM.createPortal(
     <div
       className={`${classes.overlay} ${
@@ -43,7 +53,12 @@ function StartedPlayingModal({
           className={classes.formContainer}
           onSubmit={() => startedPlayingHandler(date)}
         >
-          <label htmlFor="datePicker">Started Playing</label>
+          <label htmlFor="datePicker">
+            Started Playing
+            <div className={classes.calendarIcon}>
+              <Calendar size={32} weight="duotone" color="#2b8a3e" />
+            </div>
+          </label>
           <div className={classes.input}>
             <DatePicker
               id="datePicker"
@@ -67,3 +82,32 @@ function StartedPlayingModal({
   );
 }
 export default StartedPlayingModal;
+
+/* ///////////////////////////////
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      //placeholder
+      const element = document.getElementById("datePicker") as HTMLInputElement;
+      if (element) {
+        element.placeholder = "Select date";
+      }
+
+      //input
+      //selector
+      const inputElement = document.getElementById("datePicker");
+      if (inputElement) {
+        //create DIV
+        const divCalendarIcon = document.createElement("div");
+
+        //insert div
+        inputElement.parentNode?.insertBefore(
+          divCalendarIcon,
+          inputElement.nextSibling
+        );
+
+        //determine content inside the div
+        ReactDOM.render(<Calendar size={32} />, divCalendarIcon);
+      }
+    }
+  }, []);
+  //////////////////////////////*/

@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import classes from "./FinishedPlaying.module.css";
 import ReactDOM from "react-dom";
 import DatePicker from "react-datepicker";
+import { Calendar } from "@phosphor-icons/react";
 
 type finishedPlayingModal = {
   setModalOpen: (modalOpen: boolean) => void;
@@ -30,6 +31,16 @@ function FinishedPlayingModal({
     setModalOpen(false);
   }
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      //placeholder
+      const element = document.getElementById("datePicker") as HTMLInputElement;
+      if (element) {
+        element.placeholder = "Select date";
+      }
+    }
+  }, []);
+
   return ReactDOM.createPortal(
     <div
       className={`${classes.overlay} ${
@@ -42,7 +53,12 @@ function FinishedPlayingModal({
           className={classes.formContainer}
           onSubmit={() => finishedPlayingHandler(date)}
         >
-          <label htmlFor="datePicker">Finished Playing</label>
+          <label htmlFor="datePicker">
+            Finished Playing
+            <div className={classes.calendarIcon}>
+              <Calendar size={32} weight="duotone" color="#2b8a3e" />
+            </div>
+          </label>
           <div className={classes.input}>
             <DatePicker
               id="datePicker"

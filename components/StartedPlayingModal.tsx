@@ -24,6 +24,7 @@ function StartedPlayingModal({
       return;
     }
     changeStartedPlaying(date.toDateString());
+    setModalOpen(false);
   }
 
   function cancelHandler() {

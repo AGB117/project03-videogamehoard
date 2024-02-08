@@ -623,25 +623,6 @@ async function SinglePageInfo({
                   )}
                 </div>
               </div>
-
-              {/* end information grid here */}
-
-              {/*delete game*/}
-              {/* <div className={classes.deleteBtnContainer}>
-                <div className={classes.buttonDelete}>
-                  {gameExists && (
-                    <DeleteButton deleteGameHandler={deleteGameHandler} />
-                  )}
-                </div>
-
-                <div className={classes.buttonDelete}>
-                  {gameExists && (
-                    <RemoveGameFromCollection
-                      removeCollectionHandler={removeCollectionHandler}
-                    />
-                  )}
-                </div>
-              </div> */}
             </div>
           </Fragment>
         )}

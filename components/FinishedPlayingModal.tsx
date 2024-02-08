@@ -23,6 +23,7 @@ function FinishedPlayingModal({
       return;
     }
     changeFinishedPlaying(date.toDateString());
+    setModalOpen(false);
   }
 
   function cancelHandler() {

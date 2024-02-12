@@ -1,9 +1,15 @@
 import classes from "./Card.module.css";
 import Link from "next/link";
 import ImageLoader from "./ImageLoader";
+import { ReactNode } from "react";
+import MarkFinishedButton from "./MarkFinishedButton";
 
 type Card = {
+  gameName: string;
   gameId: number;
+  collectionid: string;
+  children: ReactNode;
+  finishedHandler: (gameName: string) => void;
 };
 
 type Genere = {
@@ -11,7 +17,13 @@ type Genere = {
   name: string;
 };
 
-async function CardCollections({ gameId }: Card) {
+async function CardCollections({
+  gameId,
+  children,
+  collectionid,
+  finishedHandler,
+  gameName,
+}: Card) {
   const response = await fetch(
     `https://api.rawg.io/api/games/${gameId}?key=${process.env.RAWG_API_KEY}`
   );
@@ -47,6 +59,12 @@ async function CardCollections({ gameId }: Card) {
 
   return (
     <div className={classes.card}>
+      <MarkFinishedButton
+        collectionid={collectionid}
+        finishedHandler={finishedHandler}
+        gameName={gameName}
+      />
+
       <Link
         href="/videogames/[singlegamepage]/[gameid]"
         as={`/videogames/${rawgData.name}/${rawgData.id}`}
@@ -60,7 +78,6 @@ async function CardCollections({ gameId }: Card) {
         )}
       </Link>
       <h1>{rawgData.name}</h1>
-
       <div className={classes.ratingDate}>
         <div className={classes.rating}>Rating: {rawgData.rating}/5</div>
 

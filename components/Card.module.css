@@ -20,7 +20,6 @@
 }
 
 .imageContainer img {
-  
   width: 100%;
   height: 100%;
   object-fit: fill;
@@ -75,4 +74,28 @@
   border-radius: 0.5rem;
   padding: 0rem 0.5rem;
   margin: 0.5rem;
+}
+
+.check {
+  position: absolute;
+  display: flex;
+  width: 32rem;
+  white-space: nowrap;
+  justify-content: flex-end;
+}
+
+.finished {
+  background-color: #b2f2bb;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  font-size: 1.6rem;
+  border: 0.1rem solid #66bb6aff;
+  border-radius: 0.5rem;
+  padding: 0rem 0.5rem;
+  margin: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.check button:hover {
+  background-color: #66bb6aff;
 }

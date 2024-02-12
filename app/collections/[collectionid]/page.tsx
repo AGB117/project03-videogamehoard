@@ -52,7 +52,7 @@ async function SingleCollection({
     .from("games")
     .select()
     .eq("user_id", user.id)
-    .eq("collection", collectionid.replace(/%20/g, " "));
+    .eq("collection", decodeURIComponent(collectionid.replace(/%20/g, " ")));
 
   //collecitons by status
   const { data: gamesByStatus } = await supabase
@@ -135,6 +135,10 @@ async function SingleCollection({
     if (!user) {
       return;
     }
+
+    // if (!nameCollectrionTrim) {
+    //   return;
+    // }
 
     try {
       const { data: newCollection } = await supabase.from("games").insert([
@@ -223,7 +227,9 @@ async function SingleCollection({
       .trim()
       .replace(/\s+/g, " ");
 
-    console.log("collection renamed to", nameCollectrionTrim);
+    if (!nameCollectrionTrim) {
+      return;
+    }
 
     if (!user) {
       return;
@@ -248,12 +254,43 @@ async function SingleCollection({
         alert("An unknown error occurred");
       }
     }
-    redirect(`/collections/${nameCollectrionTrim}`);
 
-    // revalidatePath(`/collections/${collectionid}`, "page");
+    redirect(`/collections/${encodeURIComponent(nameCollectrionTrim)}`);
   }
 
-  // console.log(decodeURIComponent(collectionid));
+  //finished handler
+  async function finishedHandler(gameName: string) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    if (!user) {
+      return;
+    }
+
+    try {
+      const { data: finished, error } = await supabase
+        .from("games")
+        .update({ status: "completed" })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", gameName)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+
+    revalidatePath("/collections/[collectionid]", "page");
+  }
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -311,14 +348,28 @@ async function SingleCollection({
             <div className={classes.games}>
               {filteredObject.map((games) => (
                 <div key={games.gameId}>
-                  <CardCollections gameId={games.gameId} />
+                  <CardCollections
+                    collectionid={collectionid}
+                    gameId={games.gameId}
+                    gameName={games.gameName}
+                    finishedHandler={finishedHandler}
+                  >
+                    {""}
+                  </CardCollections>
                 </div>
               ))}
 
               {collectionid === "all"
                 ? filteredAllGames.map((games) => (
                     <div key={games.gameId}>
-                      <CardCollections gameId={games.gameId} />
+                      <CardCollections
+                        collectionid={collectionid}
+                        gameId={games.gameId}
+                        gameName={games.gameName}
+                        finishedHandler={finishedHandler}
+                      >
+                        {""}
+                      </CardCollections>
                     </div>
                   ))
                 : ""}
@@ -328,7 +379,15 @@ async function SingleCollection({
               collectionid === "currently%20playing"
                 ? filteredStatusGames.map((games) => (
                     <div key={games.gameId}>
-                      <CardCollections gameId={games.gameId} />
+                      <div></div>
+                      <CardCollections
+                        collectionid={collectionid}
+                        gameId={games.gameId}
+                        gameName={games.gameName}
+                        finishedHandler={finishedHandler}
+                      >
+                        {""}
+                      </CardCollections>
                     </div>
                   ))
                 : ""}

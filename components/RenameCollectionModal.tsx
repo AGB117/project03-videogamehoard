@@ -29,9 +29,9 @@ function RenameModal({
   ///handlers
 
   function submit(collectionRename: FormData) {
-    renameCollection(collectionRename);
-    console.log("rename to", collectionRename.get("collectionRename"));
     setModalOpen(false);
+    renameCollection(collectionRename);
+    // console.log("rename to", collectionRename.get("collectionRename"));
   }
 
   function cancelHandler() {

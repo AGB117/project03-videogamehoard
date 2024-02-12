@@ -54,7 +54,9 @@ function Footer() {
         <div>
           <h1>Contact us</h1>
           <ul>
-            <li>help@videogamehoard.com</li>
+            <li>
+              <a href="https://abnergonzalez.tech">help@videogamehoard.com</a>
+            </li>
           </ul>
         </div>
         <nav>

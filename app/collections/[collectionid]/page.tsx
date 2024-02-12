@@ -268,10 +268,39 @@ async function SingleCollection({
       return;
     }
 
+    //date formatting
+    const nowDate = new Date();
+    const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+      nowDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+    //mark as finished
     try {
       const { data: finished, error } = await supabase
         .from("games")
         .update({ status: "completed" })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", gameName)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+
+    //dateFinished
+
+    try {
+      const { data: dateFinished, error } = await supabase
+        .from("games")
+        .update({ finishedplaying: nowDateFormatted })
         .eq("user_id", user?.id)
         .eq("game_info ->> gameName", gameName)
         .select();

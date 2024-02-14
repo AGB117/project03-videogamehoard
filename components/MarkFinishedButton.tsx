@@ -20,7 +20,7 @@ function MarkFinishedButton({ collectionid, gameName, finishedHandler }: Card) {
           onClick={() => markFinishedHandler(gameName)}
           className={classes.finished}
         >
-          I finished!
+          Mark as completed!
         </button>
       ) : (
         ""

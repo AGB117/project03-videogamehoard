@@ -139,6 +139,20 @@ function CollectionBar({
                   </Link>
                 </li>
 
+                <li className={classes.status}>
+                  {collectionid === "uncompleted" ? (
+                    <FolderIconOpen />
+                  ) : (
+                    <FolderIconClose />
+                  )}
+                  <Link
+                    href="/collections/[collectionid]"
+                    as={`/collections/uncompleted`}
+                  >
+                    Uncompleted
+                  </Link>
+                </li>
+
                 {filteredArray.map((collections) => (
                   <li className={classes.userCollection} key={Math.random()}>
                     {collectionid === encodeURIComponent(collections) ? (
@@ -215,6 +229,20 @@ function CollectionBar({
                 as={`/collections/completed`}
               >
                 Completed
+              </Link>
+            </li>
+
+            <li className={classes.status}>
+              {collectionid === "uncompleted" ? (
+                <FolderIconOpen />
+              ) : (
+                <FolderIconClose />
+              )}
+              <Link
+                href="/collections/[collectionid]"
+                as={`/collections/uncompleted`}
+              >
+                Uncompleted
               </Link>
             </li>
 

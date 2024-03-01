@@ -1,7 +1,8 @@
-"use client";
 import classes from "./Card.module.css";
 import Link from "next/link";
 import ImageLoader from "./ImageLoader";
+import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
 
 type Card = {
   gameId: number;
@@ -17,7 +18,7 @@ type Genre = {
   name: string;
 };
 
-function Card({
+async function Card({
   gameId,
   gameName,
   gameImg,
@@ -25,6 +26,31 @@ function Card({
   gameDate,
   gameGenre,
 }: Card) {
+  /////display status and collection if the game is in your collection
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: userStatusCollection } = await supabase
+    .from("games")
+    .select()
+    .eq("user_id", user?.id)
+    .eq("game_info ->> gameName", gameName);
+
+  const status =
+    (userStatusCollection?.map((game) => game.status).toString() as string) ??
+    "";
+  const collection =
+    (userStatusCollection
+      ?.map((game) => game.collection)
+      .toString() as string) ?? "";
+
+  const inCollection = collection === "" && status === "" ? false : true;
+  // const statusExists = status !== "" ? true : false;
+  const collectionExists = collection !== "" ? true : false;
+
   //format date
   function formatDate(inputDate: string): string {
     const parts: number[] = inputDate
@@ -53,7 +79,6 @@ function Card({
 
   const formattedDate: string = formatDate(gameDate);
 
-  ///////
   return (
     <div className={classes.card}>
       <Link
@@ -72,9 +97,37 @@ function Card({
 
       <div className={classes.ratingDate}>
         <div className={classes.rating}>Rating: {gameRating}/5</div>
-
         <div className={classes.date}>{formattedDate}</div>
       </div>
+
+      {inCollection && (
+        <div className={classes.statusCollectionContainer}>
+          <div className={classes.collectionStatus}>
+            <Link
+              href="/collections/[collectionid]"
+              as={`/collections/${encodeURIComponent(status)}`}
+            >
+              {status
+                .split(" ")
+                .map(
+                  (word: string) => word.charAt(0).toUpperCase() + word.slice(1)
+                )
+                .join(" ")}
+            </Link>
+          </div>
+          <div className={classes.collectionStatus}>
+            {collectionExists ? (
+              <Link
+                href="/collections/[collectionid]"
+                as={`/collections/${encodeURIComponent(collection)}`}
+              >{`${collection}`}</Link>
+            ) : (
+              "No collection"
+            )}
+          </div>
+        </div>
+      )}
+
       <div className={classes.generes}>
         <ul>
           {gameGenre.map((genere: Genre) => (

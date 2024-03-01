@@ -3,6 +3,8 @@ import Link from "next/link";
 import ImageLoader from "./ImageLoader";
 import { ReactNode } from "react";
 import MarkFinishedButton from "./MarkFinishedButton";
+import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
 
 type Card = {
   gameName: string;
@@ -28,6 +30,34 @@ async function CardCollections({
     `https://api.rawg.io/api/games/${gameId}?key=${process.env.RAWG_API_KEY}`
   );
   const rawgData = await response.json();
+
+  ///users game info
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return;
+  }
+
+  //this is the row of the game
+  const { data: userData } = await supabase
+    .from("games")
+    .select()
+    .eq("user_id", user?.id)
+    .eq("game_info ->> gameName", gameName);
+
+  if (!userData) {
+    return;
+  }
+
+  //status of the game
+  const userDataStatus = userData.map((game) => game.status).toString();
+  const userDataCollection = userData.map((game) => game.collection).toString();
+
+  const collectionExists = userDataCollection !== "" ? true : false;
 
   //format date
   function formatDate(inputDate: string): string {
@@ -83,6 +113,36 @@ async function CardCollections({
 
         <div className={classes.date}>{formattedDate}</div>
       </div>
+
+      {/* test feature status and collection of game in cards */}
+
+      <div className={classes.statusCollectionContainer}>
+        <div className={classes.collectionStatus}>
+          <Link
+            href="/collections/[collectionid]"
+            as={`/collections/${encodeURIComponent(userDataStatus)}`}
+          >
+            {userDataStatus
+              .split(" ")
+              .map(
+                (word: string) => word.charAt(0).toUpperCase() + word.slice(1)
+              )
+              .join(" ")}
+          </Link>
+        </div>
+        <div className={classes.collectionStatus}>
+          {collectionExists ? (
+            <Link
+              href="/collections/[collectionid]"
+              as={`/collections/${encodeURIComponent(userDataCollection)}`}
+            >{`${userDataCollection}`}</Link>
+          ) : (
+            "No collection"
+          )}
+        </div>
+      </div>
+      {/*  */}
+
       <div className={classes.generes}>
         <ul>
           {rawgData.genres.map((genere: Genere) => (

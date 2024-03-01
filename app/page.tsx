@@ -16,17 +16,6 @@ export const metadata = {
 };
 
 export default async function Index() {
-  // const cookieStore = cookies();
-  // const supabase = createClient(cookieStore);
-
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
-
-  // const { data: games, error } = await supabase.from("games").select();
-
-  // console.log(user);
-
   return (
     <Fragment>
       <div className={classes.imageContainer}></div>

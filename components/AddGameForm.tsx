@@ -59,6 +59,7 @@ function AddGameForm({ filteredArrayCollection, addGameHandler }: AddGame) {
 
         <option value="currently playing">Currently playing</option>
         <option value="completed">Completed</option>
+        <option value="uncompleted">Uncompleted</option>
       </select>
 
       {/* Select Collection */}

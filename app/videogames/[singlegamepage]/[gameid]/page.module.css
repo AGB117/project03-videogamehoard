@@ -45,6 +45,19 @@
 }
 
 /*left side */
+.imgNotFound {
+  display: flex;
+  color: #ffff;
+  background-color: black;
+  height: 35rem;
+  width: 55rem;
+  font-size: 2.4rem;
+  border-radius: 1rem;
+  margin: 14rem auto 0 auto;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+}
 
 .leftSide {
   width: 50vw;
@@ -56,7 +69,7 @@
   margin: 0 auto;
   object-fit: cover;
   width: 100%;
-  /* height: 100%; */
+  
   justify-self: center;
   justify-content: center;
   justify-items: center;
@@ -64,8 +77,6 @@
 
 .imageContainer img {
   margin: 14rem auto 0 auto;
-  justify-self: center;
-  justify-content: center;
   justify-items: center;
   border-radius: 1rem;
   width: 55rem;

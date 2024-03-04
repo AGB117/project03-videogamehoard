@@ -82,32 +82,3 @@ function StartedPlayingModal({
   );
 }
 export default StartedPlayingModal;
-
-/* ///////////////////////////////
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      //placeholder
-      const element = document.getElementById("datePicker") as HTMLInputElement;
-      if (element) {
-        element.placeholder = "Select date";
-      }
-
-      //input
-      //selector
-      const inputElement = document.getElementById("datePicker");
-      if (inputElement) {
-        //create DIV
-        const divCalendarIcon = document.createElement("div");
-
-        //insert div
-        inputElement.parentNode?.insertBefore(
-          divCalendarIcon,
-          inputElement.nextSibling
-        );
-
-        //determine content inside the div
-        ReactDOM.render(<Calendar size={32} />, divCalendarIcon);
-      }
-    }
-  }, []);
-  //////////////////////////////*/

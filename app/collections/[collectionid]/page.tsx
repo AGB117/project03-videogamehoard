@@ -93,11 +93,6 @@ async function SingleCollection({
     Object.values(obj).some((value) => value !== "" && value !== null)
   );
 
-  // console.log(
-  //   "id array of filetered",
-  //   filteredAllGamesClean.map((game) => game.gameId)
-  // );
-
   //set new array to remove duplicates
   const filteredAllGames: GameObject = [...new Set(filteredAllGamesClean)];
 
@@ -135,10 +130,6 @@ async function SingleCollection({
     if (!user) {
       return;
     }
-
-    // if (!nameCollectrionTrim) {
-    //   return;
-    // }
 
     try {
       const { data: newCollection } = await supabase.from("games").insert([
@@ -348,7 +339,8 @@ async function SingleCollection({
               {(collectionid === "all" ||
               collectionid === "completed" ||
               collectionid === "want%20to%20play" ||
-              collectionid === "currently%20playing"
+              collectionid === "currently%20playing" ||
+              collectionid === "uncompleted"
                 ? false
                 : true) &&
                 (filteredObject.length === 0 || filteredObject.length >= 2
@@ -358,7 +350,8 @@ async function SingleCollection({
               {/*completed or currently playing counter*/}
               {collectionid === "completed" ||
               collectionid === "want%20to%20play" ||
-              collectionid === "currently%20playing"
+              collectionid === "currently%20playing" ||
+              collectionid === "uncompleted"
                 ? filteredStatusGames.length === 0 ||
                   filteredStatusGames.length >= 2
                   ? `${filteredStatusGames.length} Games in Collection`
@@ -405,7 +398,8 @@ async function SingleCollection({
 
               {collectionid === "completed" ||
               collectionid === "want%20to%20play" ||
-              collectionid === "currently%20playing"
+              collectionid === "currently%20playing" ||
+              collectionid === "uncompleted"
                 ? filteredStatusGames.map((games) => (
                     <div key={games.gameId}>
                       <div></div>
@@ -426,7 +420,8 @@ async function SingleCollection({
             {(collectionid === "all" ||
             collectionid === "completed" ||
             collectionid === "want%20to%20play" ||
-            collectionid === "currently%20playing"
+            collectionid === "currently%20playing" ||
+            collectionid === "uncompleted"
               ? false
               : true) && (
               <>

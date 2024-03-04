@@ -16,3 +16,13 @@
     transform: rotate(360deg);
   }
 }
+
+.loadingCirlceContainer {
+  margin: 14rem auto 0 auto;
+  justify-items: center;
+  align-content: center;
+  border-radius: 1rem;
+  width: 55rem;
+  height: 34.8rem;
+  /* background-color: rgb(66, 149, 221); */
+}

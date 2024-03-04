@@ -8,7 +8,7 @@ export type GameList = {
   id: number;
   background_image: string;
   platforms: [{ platform: { id: number; slug: string; name: string } }];
-  released: string;
+  released: string | null;
   slug: string;
   rating: number;
   genres: [
@@ -48,6 +48,11 @@ async function SearchResults({
   const gameResults = userData.results;
   console.log("search results", gameResults);
 
+  //some games have no released date and they cause this component to create empty divs
+  const filteredArray: GameList[] = gameResults.filter(
+    (game: GameList) => game.released !== null
+  );
+
   return (
     <Fragment>
       <div className={classes.searchContainer}>
@@ -55,7 +60,7 @@ async function SearchResults({
       </div>
       <div className={classes.results}>
         <div className={classes.games}>
-          {gameResults.map((game: GameList) => (
+          {filteredArray.map((game: GameList) => (
             <div key={game.id}>
               <Card
                 gameId={game.id}

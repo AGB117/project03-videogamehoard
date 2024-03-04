@@ -1,6 +1,6 @@
 .card {
-  height: 35rem;
-  width: 32rem;
+  height: 45rem;
+  width: 35rem;
   display: flex;
   flex-direction: column;
 
@@ -79,7 +79,7 @@
 .check {
   position: absolute;
   display: flex;
-  width: 32rem;
+  width: 35rem;
   white-space: nowrap;
   justify-content: flex-end;
 }
@@ -98,4 +98,27 @@
 
 .check button:hover {
   background-color: #66bb6aff;
+}
+
+/* //new feature on collection cards// */
+
+.statusCollectionContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0.5rem 0rem 0.5rem;
+}
+
+.collectionStatus {
+  font-size: 1.6rem;
+}
+
+.collectionStatus a {
+  font-size: 1.6rem;
+  background-color: #87ceebff;
+  border-radius: 50rem;
+  padding: 0.2rem 0.8rem;
+}
+
+.collectionStatus a:hover {
+  background-color: #00abe4ff;
 }

@@ -8,7 +8,7 @@ export type GameList = {
   id: number;
   background_image: string;
   platforms: [{ platform: { id: number; slug: string; name: string } }];
-  released: string;
+  released: string | null;
   slug: string;
   rating: number;
   genres: [

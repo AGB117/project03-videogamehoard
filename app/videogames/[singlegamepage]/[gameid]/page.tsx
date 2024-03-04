@@ -12,6 +12,7 @@ import Link from "next/link";
 import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
 import StartedPlaying from "@/components/StartedPlaying";
 import Finishedplaying from "@/components/FinishedPlaying";
+import ImageLoaderSinglePage from "@/components/ImageLoaderSinglePage";
 
 type Genre = {
   id: string;
@@ -400,8 +401,13 @@ async function SinglePageInfo({
   const gameInCollection = gameCollection?.length ? true : false;
 
   //format date
-  function formatDate(inputDate: string): string {
-    const parts: number[] = inputDate
+  function formatDate(inputDate: string | null): string {
+    if (inputDate === null) {
+      const formattedDate: string = "No release date";
+      return formattedDate;
+    }
+
+    const parts: number[] | null = inputDate
       .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
@@ -421,7 +427,7 @@ async function SinglePageInfo({
     return formattedDate;
   }
 
-  const formattedDateReleased: string = formatDate(userData.released);
+  const formattedDateReleased: string | null = formatDate(userData.released);
 
   const dateAdded = gameObject.map((game) => game.dateadded);
   const dateStartedPlaying = gameObject.map((game) => game.startedplaying);
@@ -449,15 +455,21 @@ async function SinglePageInfo({
     ?.map((gameStatus) => gameStatus.status.replace(/\s+/g, ""))
     .toString();
 
+  const imageExists = userData.background_image ? true : false;
+
   return (
     <Fragment>
       <div className={classes.container}>
         {noGameInfo && (
           <Fragment>
             <div className={classes.leftSide}>
-              <div className={classes.imageContainer}>
-                <img src={userData.background_image} alt="game image" />
-              </div>
+              {imageExists ? (
+                <div className={classes.imageContainer}>
+                  <ImageLoaderSinglePage image={userData.background_image} />
+                </div>
+              ) : (
+                <div className={classes.imgNotFound}>Image not Found!</div>
+              )}
 
               {/*collection and status handlerss*/}
               <div className={classes.handlers}>

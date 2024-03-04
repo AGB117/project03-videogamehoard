@@ -60,8 +60,13 @@ async function CardCollections({
   const collectionExists = userDataCollection !== "" ? true : false;
 
   //format date
-  function formatDate(inputDate: string): string {
-    const parts: number[] = inputDate
+  function formatDate(inputDate: string | null): string {
+    if (inputDate === null) {
+      const formattedDate: string = "No release date";
+      return formattedDate;
+    }
+
+    const parts: number[] | null = inputDate
       .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
@@ -81,11 +86,7 @@ async function CardCollections({
     return formattedDate;
   }
 
-  if (!rawgData.released) {
-    return;
-  }
-
-  const formattedDate: string = formatDate(rawgData.released);
+  const formattedDate: string | null = formatDate(rawgData.released);
 
   return (
     <div className={classes.card}>

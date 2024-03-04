@@ -9,7 +9,7 @@ type Card = {
   gameName: string;
   gameImg: string;
   gameRating: number;
-  gameDate: string;
+  gameDate: string | null;
   gameGenre: Genre[];
 };
 
@@ -52,8 +52,13 @@ async function Card({
   const collectionExists = collection !== "" ? true : false;
 
   //format date
-  function formatDate(inputDate: string): string {
-    const parts: number[] = inputDate
+  function formatDate(inputDate: string | null): string {
+    if (inputDate === null) {
+      const formattedDate: string = "No release date";
+      return formattedDate;
+    }
+
+    const parts: number[] | null = inputDate
       .split("-")
       .map((part) => parseInt(part, 10));
     const [year, month, day] = parts;
@@ -71,10 +76,6 @@ async function Card({
     );
 
     return formattedDate;
-  }
-
-  if (!gameDate) {
-    return;
   }
 
   const formattedDate: string = formatDate(gameDate);

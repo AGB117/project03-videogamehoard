@@ -6,7 +6,7 @@ type imageType = {
   image: string;
 };
 
-function ImageLoader({ image }: imageType) {
+function ImageLoaderSinglePage({ image }: imageType) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -21,13 +21,15 @@ function ImageLoader({ image }: imageType) {
 
   return (
     <Fragment>
-      {loading ? (
-        <div className={classes.loadingCirlce}></div>
-      ) : (
-        <img src={image} alt="Loaded game image" loading="lazy" />
-      )}
+      <div className={classes.loadingCirlceContainer}>
+        {loading ? (
+          <div className={classes.loadingCirlce}></div>
+        ) : (
+          <img src={image} alt="Loaded game image" loading="lazy" />
+        )}
+      </div>
     </Fragment>
   );
 }
 
-export default ImageLoader;
+export default ImageLoaderSinglePage;

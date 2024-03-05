@@ -102,9 +102,15 @@ async function SinglePageInfo({
         nowDate.getMonth() + 1
       ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
 
-      const { data, error } = await supabase
+      const { data: finished, error: error1 } = await supabase
         .from("games")
         .update({ finishedplaying: nowDateFormatted })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+      const { data: started, error: error2 } = await supabase
+        .from("games")
+        .update({ startedplaying: nowDateFormatted })
         .eq("user_id", user?.id)
         .eq("game_info ->> gameName", userData.name)
         .select();

@@ -18,7 +18,7 @@ function StatusSelector({ changeStatusHandler, children }: changeStatus) {
       <option value="want to play">Want to play</option>
       <option value="currently playing">Currently Playing</option>
       <option value="completed">Completed</option>
-      <option value="uncompleted">uncompleted</option>
+      <option value="uncompleted">Uncompleted</option>
     </select>
   );
 }

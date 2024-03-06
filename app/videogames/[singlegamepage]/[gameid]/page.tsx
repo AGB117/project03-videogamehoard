@@ -129,6 +129,19 @@ async function SinglePageInfo({
         .eq("game_info ->> gameName", userData.name)
         .select();
     }
+    if (status === "uncompleted") {
+      const nowDate = new Date();
+      const nowDateFormatted = `${nowDate.getFullYear()}-${String(
+        nowDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(nowDate.getDate()).padStart(2, "0")}`;
+
+      const { data, error } = await supabase
+        .from("games")
+        .update({ startedplaying: nowDateFormatted })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    }
 
     revalidatePath(`/videogames/[singlegamepage]/${gameid}`, "page");
   }

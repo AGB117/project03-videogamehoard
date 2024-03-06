@@ -43,6 +43,9 @@ async function SinglePageInfo({
 
   const userData = await response.json();
 
+  console.log("game object", userData);
+  console.log("metacritic url", userData.metacritic_url);
+
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const {
@@ -546,42 +549,6 @@ async function SinglePageInfo({
 
               {/* start information grid here */}
               <div className={classes.infoGrid}>
-                {/* /////////////////////////// */}
-
-                <div className={classes.collection}>
-                  {gameExists ? (
-                    <div>
-                      Added to library
-                      {dateAddedExists && (
-                        <div className={classes.dateAdded}>
-                          <div>{formattedDateAdded}</div>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>Not in library</div>
-                  )}
-                </div>
-
-                <div className={classes.collection}>
-                  <div> Collection</div>
-                  {gameInCollection ? (
-                    <>
-                      <Link
-                        href="/collections/[collectionid]"
-                        as={`/collections/${encodeURIComponent(
-                          gameCollectionName
-                        )}`}
-                      >{`${gameCollection}`}</Link>
-                    </>
-                  ) : (
-                    <div className={classes.notInCollection}>
-                      Not in collection
-                    </div>
-                  )}
-                </div>
-
-                {/* /////////////////////////// */}
                 <div>
                   <h1>Released</h1> {formattedDateReleased}
                 </div>
@@ -615,6 +582,83 @@ async function SinglePageInfo({
                 <div>
                   <h1>Rating</h1>
                   <p>{userData.rating}/5</p>
+                </div>
+
+                <div>
+                  <h1>Metascore</h1>
+                  <div className={classes.meta}>
+                    <a href={userData.metacritic_url}>
+                      <img src="/Mcrop.png" />
+                    </a>
+                    {userData.metacritic !== null ? (
+                      <Fragment>
+                        <p>{userData.metacritic}</p>
+                      </Fragment>
+                    ) : (
+                      "No score"
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <h1>Your rating</h1>
+                  <p>/100</p>
+                </div>
+                <div>
+                  <h1>ESRB</h1>
+                  <div>
+                    {userData.esrb_rating
+                      ? userData.esrb_rating.name
+                      : "No ESRB"}
+                  </div>
+                </div>
+
+                <div>
+                  <h1>Publisher</h1>
+                  <ul>
+                    {userData.publishers.length !== 0
+                      ? userData.publishers.map(
+                          (publisher: { id: string; name: string | null }) => (
+                            <li key={publisher.id}>{publisher.name}</li>
+                          )
+                        )
+                      : "No publishers"}
+                  </ul>
+                </div>
+
+                <div>
+                  <h1>Added to library</h1>
+                  {gameExists ? (
+                    <>
+                      {dateAddedExists && (
+                        <div className={classes.dateAdded}>
+                          <div>{formattedDateAdded}</div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className={classes.notInCollection}>
+                      Not in library
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <h1> Collection</h1>
+                  {gameInCollection ? (
+                    <>
+                      <Link
+                        href="/collections/[collectionid]"
+                        as={`/collections/${encodeURIComponent(
+                          gameCollectionName
+                        )}`}
+                      >{`${gameCollection}`}</Link>
+                    </>
+                  ) : (
+                    <div className={classes.notInCollection}>
+                      Not in collection
+                    </div>
+                  )}
                 </div>
 
                 <div>

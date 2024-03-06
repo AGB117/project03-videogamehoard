@@ -69,7 +69,7 @@
   margin: 0 auto;
   object-fit: cover;
   width: 100%;
-  
+
   justify-self: center;
   justify-content: center;
   justify-items: center;
@@ -212,6 +212,7 @@
   font-size: 2rem;
   grid-template-columns: repeat(2, 2fr);
   margin-top: 5rem;
+  row-gap: 1.6rem;
 }
 
 .infoGrid h1 {
@@ -237,6 +238,20 @@
   display: flex;
   margin-top: 6rem;
   /* align-items: center; */
+}
+
+.meta {
+  display: flex;
+  gap: 2rem;
+}
+.meta p {
+  font-size: 2.4rem !important;
+}
+
+.meta img {
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 1rem;
 }
 
 /*media handling*/

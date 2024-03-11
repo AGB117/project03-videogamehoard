@@ -13,6 +13,7 @@ import RemoveGameFromCollection from "@/components/RemoveGameFromCollection";
 import StartedPlaying from "@/components/StartedPlaying";
 import Finishedplaying from "@/components/FinishedPlaying";
 import ImageLoaderSinglePage from "@/components/ImageLoaderSinglePage";
+import CustomRating from "@/components/CustomRating";
 
 type Genre = {
   id: string;
@@ -42,9 +43,6 @@ async function SinglePageInfo({
   );
 
   const userData = await response.json();
-
-  console.log("game object", userData);
-  console.log("metacritic url", userData.metacritic_url);
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
@@ -370,7 +368,7 @@ async function SinglePageInfo({
         alert("An unknown error occurred");
       }
     }
-    console.log(date);
+
     revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
   }
 
@@ -387,6 +385,38 @@ async function SinglePageInfo({
       const { data: renameCollection, error } = await supabase
         .from("games")
         .update({ finishedplaying: date })
+        .eq("user_id", user?.id)
+        .eq("game_info ->> gameName", userData.name)
+        .select();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        if ("code" in error) {
+          console.log((error as { code: string }).code);
+          alert((error as { code: string }).code);
+        }
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("An unknown error occurred");
+      }
+    }
+
+    revalidatePath("/videogames/[singlegamepage]/[gameid]", "page");
+  }
+
+  async function ChangeCustomRating(rating: number) {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    if (!rating) {
+      return;
+    }
+
+    try {
+      const { data: customRating, error } = await supabase
+        .from("games")
+        .update({ customrating: rating })
         .eq("user_id", user?.id)
         .eq("game_info ->> gameName", userData.name)
         .select();
@@ -454,6 +484,7 @@ async function SinglePageInfo({
   const dateAdded = gameObject.map((game) => game.dateadded);
   const dateStartedPlaying = gameObject.map((game) => game.startedplaying);
   const dateFinishedPlaying = gameObject.map((game) => game.finishedplaying);
+  const customRating = gameObject.map((game) => game.customrating);
 
   const dateAddedExists = dateAdded.length !== 0 ? true : false;
   const dateStartedPlayingExists =
@@ -464,6 +495,9 @@ async function SinglePageInfo({
     dateFinishedPlaying.length !== 0 && dateFinishedPlaying[0] !== null
       ? true
       : false;
+
+  const customRatingExists =
+    customRating.length !== 0 && customRating[0] !== null ? true : false;
 
   const formattedDateAdded: string = formatDate(dateAdded.toString());
   const formattedStartedPlaying: string = formatDate(
@@ -580,31 +614,6 @@ async function SinglePageInfo({
                 </div>
 
                 <div>
-                  <h1>Rating</h1>
-                  <p>{userData.rating}/5</p>
-                </div>
-
-                <div>
-                  <h1>Metascore</h1>
-                  <div className={classes.meta}>
-                    <a href={userData.metacritic_url}>
-                      <img src="/Mcrop.png" />
-                    </a>
-                    {userData.metacritic !== null ? (
-                      <Fragment>
-                        <p>{userData.metacritic}</p>
-                      </Fragment>
-                    ) : (
-                      "No score"
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <h1>Your rating</h1>
-                  <p>/100</p>
-                </div>
-                <div>
                   <h1>ESRB</h1>
                   <div>
                     {userData.esrb_rating
@@ -624,6 +633,54 @@ async function SinglePageInfo({
                         )
                       : "No publishers"}
                   </ul>
+                </div>
+
+                <div>
+                  <h1>Metascore</h1>
+                  <div className={classes.meta}>
+                    <a href={userData.metacritic_url}>
+                      <img src="/Mcrop.png" />
+                    </a>
+                    {userData.metacritic !== null ? (
+                      <div>
+                        <p>{userData.metacritic}/100</p>
+                      </div>
+                    ) : (
+                      "No score"
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <h1>Rating</h1>
+                  <p>{userData.rating}/5</p>
+                </div>
+
+                <div>
+                  <h1> Your Rating</h1>
+                  {gameExists ? (
+                    <>
+                      {customRatingExists ? (
+                        <span className={classes.dateAdded}>
+                          {customRating}/100
+                          <CustomRating
+                            ChangeCustomRating={ChangeCustomRating}
+                          />
+                        </span>
+                      ) : (
+                        <div className={classes.notInCollection}>
+                          No rating yet
+                          <CustomRating
+                            ChangeCustomRating={ChangeCustomRating}
+                          />
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className={classes.notInCollection}>
+                      Not in library
+                    </div>
+                  )}
                 </div>
 
                 <div>

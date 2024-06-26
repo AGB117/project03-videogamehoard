@@ -76,7 +76,7 @@
 }
 
 .imageContainer img {
-  margin: 14rem auto 0 auto;
+  /* margin: 14rem auto 0 auto; */
   justify-items: center;
   border-radius: 1rem;
   width: 55rem;

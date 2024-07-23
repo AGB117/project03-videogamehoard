@@ -76,12 +76,12 @@
 }
 
 .imageContainer img {
-  /* margin: 14rem auto 0 auto; */
   justify-items: center;
   border-radius: 1rem;
   width: 55rem;
   height: auto;
 }
+/* margin: 14rem auto 0 auto; */
 
 .handlers {
   margin: 4rem 0rem;
